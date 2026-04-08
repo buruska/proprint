@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 
 import { CartProvider } from "@/app/_components/cart-context";
-import { SiteFooter } from "@/app/_components/site-footer";
-import { SiteHeader } from "@/app/_components/site-header";
+import { SiteFrame } from "@/app/_components/site-frame";
 import { siteMeta } from "@/lib/data";
 
 import "leaflet/dist/leaflet.css";
@@ -32,11 +31,7 @@ export default function RootLayout({
     <html lang="hu" data-scroll-behavior="smooth">
       <body>
         <CartProvider>
-          <div className="page-frame">
-            <SiteHeader />
-            <main>{children}</main>
-            <SiteFooter />
-          </div>
+          <SiteFrame>{children}</SiteFrame>
         </CartProvider>
       </body>
     </html>
