@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: "Szolgáltatásaink",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function ServicesPage() {
   const content = await getServicesPageContent();
 

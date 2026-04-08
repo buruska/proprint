@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 
 import { HandmadeMap } from "@/app/_components/handmade-map";
 import { getHandmadeEvents } from "@/lib/handmade-events";
@@ -8,6 +8,8 @@ import styles from "./page.module.css";
 export const metadata: Metadata = {
   title: "Handmade",
 };
+
+export const dynamic = "force-dynamic";
 
 function formatEventDate(value: string) {
   const date = new Date(`${value}T00:00:00`);

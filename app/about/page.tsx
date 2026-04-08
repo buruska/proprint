@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: "Kiadóról",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function AboutPage() {
   const content = await getAboutPageContent();
 
