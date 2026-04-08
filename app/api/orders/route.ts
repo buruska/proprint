@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { BOOK_STATUS_VALUES, type BookStatus } from "@/lib/book-status";
-import { getOrderNotificationRecipient, sendEmail } from "@/lib/email";
+import { getOrderNotificationRecipients, sendEmail } from "@/lib/email";
 import { connectToDatabase } from "@/lib/mongodb";
 import { OrderModel } from "@/lib/models/order";
 
@@ -256,7 +256,7 @@ export async function POST(request: Request) {
   try {
     await Promise.all([
       sendEmail({
-        to: getOrderNotificationRecipient(),
+        to: getOrderNotificationRecipients(),
         subject: `Új rendelés érkezett - ${orderNumber}`,
         text: buildAdminEmailText({
           orderNumber,
@@ -306,6 +306,3 @@ export async function POST(request: Request) {
     { status: 201 },
   );
 }
-
-
-

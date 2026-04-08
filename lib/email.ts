@@ -1,9 +1,12 @@
-const RESEND_API_URL = "https://api.resend.com/emails";
-const FALLBACK_ORDER_EMAIL_TO = "burusakos@yahoo.co.uk";
+﻿const RESEND_API_URL = "https://api.resend.com/emails";
+const FALLBACK_ORDER_EMAIL_RECIPIENTS = [
+  "burusakos@yahoo.co.uk",
+  "proprintkiado@gmail.com",
+] as const;
 const FALLBACK_ORDER_EMAIL_FROM = "Pro-Print Kiadó <onboarding@resend.dev>";
 
 type SendEmailParams = {
-  to: string;
+  to: string | string[];
   subject: string;
   text: string;
   html: string;
@@ -23,11 +26,20 @@ function getOrderEmailFrom() {
   return process.env.ORDER_EMAIL_FROM?.trim() || FALLBACK_ORDER_EMAIL_FROM;
 }
 
-export function getOrderNotificationRecipient() {
-  return process.env.ORDER_EMAIL_TO?.trim() || FALLBACK_ORDER_EMAIL_TO;
+export function getOrderNotificationRecipients() {
+  const configuredRecipients = (process.env.ORDER_EMAIL_TO ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  return Array.from(
+    new Set([...configuredRecipients, ...FALLBACK_ORDER_EMAIL_RECIPIENTS]),
+  );
 }
 
 export async function sendEmail({ to, subject, text, html }: SendEmailParams) {
+  const recipients = Array.isArray(to) ? to : [to];
+
   const response = await fetch(RESEND_API_URL, {
     method: "POST",
     headers: {
@@ -36,7 +48,7 @@ export async function sendEmail({ to, subject, text, html }: SendEmailParams) {
     },
     body: JSON.stringify({
       from: getOrderEmailFrom(),
-      to: [to],
+      to: recipients,
       subject,
       text,
       html,

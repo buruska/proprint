@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
@@ -13,5 +13,5 @@ export default function AdminRootLayout({
 }: {
   children: ReactNode;
 }) {
-  return children;
+  return <div className="admin-route-layout">{children}</div>;
 }

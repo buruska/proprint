@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #f4f8f7;
   --surface: #fbfdfc;
   --surface-strong: #f2f7f6;
@@ -58,6 +58,14 @@ main {
 .page-frame {
   position: relative;
   min-height: 100vh;
+}
+
+.page-frame:has(.admin-route-layout) main {
+  padding-bottom: 24px;
+}
+
+.page-frame:has(.admin-route-layout) .site-footer {
+  display: none;
 }
 
 .shell {
@@ -974,6 +982,10 @@ main {
     padding-bottom: calc(var(--footer-height) + 88px);
   }
 
+  .page-frame:has(.admin-route-layout) main {
+    padding-bottom: 20px;
+  }
+
   .site-footer__supporters {
     width: 100%;
     justify-content: space-between;
@@ -1301,5 +1313,3 @@ main {
   width: 100%;
   max-width: none;
 }
-
-
