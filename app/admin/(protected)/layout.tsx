@@ -1,9 +1,11 @@
-﻿import type { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { redirect } from "next/navigation";
 
 import { AdminShell } from "@/app/_components/admin-shell";
 import { getAuthenticatedAdmin } from "@/lib/admin-auth";
+
+export const dynamic = "force-dynamic";
 
 export default async function ProtectedAdminLayout({
   children,
