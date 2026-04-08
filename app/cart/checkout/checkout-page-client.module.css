@@ -1,0 +1,141 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.formPanel,
+.summaryPanel {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid rgba(167, 198, 192, 0.55);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow);
+}
+
+.header {
+  display: grid;
+  gap: 8px;
+}
+
+.header h1,
+.summaryPanel h2,
+.listSection h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.intro,
+.total,
+.itemListEntry {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--teal-deep);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--line-strong);
+  background: white;
+  color: var(--text);
+}
+
+.field textarea {
+  min-height: 116px;
+  resize: vertical;
+}
+
+.listSection {
+  display: grid;
+  gap: 10px;
+}
+
+.itemList {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.total strong {
+  color: var(--teal-deep);
+}
+
+.actions,
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.primaryAction,
+.secondaryAction,
+.orderButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.primaryAction,
+.orderButton {
+  background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+  color: white;
+}
+
+.secondaryAction {
+  background: rgba(255, 255, 255, 0.84);
+  border-color: rgba(7, 59, 58, 0.2);
+  color: var(--teal-deep);
+}
+
+.orderButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  filter: grayscale(0.2);
+}
+
+.feedbackSuccess,
+.feedbackError {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(167, 198, 192, 0.55);
+  line-height: 1.6;
+}
+
+.feedbackSuccess {
+  background: rgba(217, 240, 237, 0.55);
+  color: var(--teal-deep);
+}
+
+.feedbackError {
+  background: rgba(255, 236, 235, 0.9);
+  color: #8a2a22;
+  border-color: rgba(138, 42, 34, 0.2);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProPrint - Megvalósítási Ütemterv</title>
+    <style>
+      :root {
+        --bg: #f2f8f7;
+        --paper: #fffdfa;
+        --ink: #183330;
+        --muted: #58706c;
+        --teal: #0f766e;
+        --teal-soft: #d7efeb;
+        --gold: #b78637;
+        --line: #c9ddd9;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background:
+          radial-gradient(circle at top right, rgba(15, 118, 110, 0.12), transparent 24%),
+          linear-gradient(180deg, #f7fbfa 0%, #edf4f2 100%);
+        color: var(--ink);
+      }
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        padding: 16mm 15mm 14mm;
+        background: var(--paper);
+      }
+      .hero {
+        padding: 18px 20px;
+        border: 1px solid var(--line);
+        background: linear-gradient(135deg, #f7fffd 0%, #edf7f5 100%);
+      }
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--teal);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      h1, h2, h3 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      h1 { font-size: 28px; line-height: 1.18; }
+      h2 {
+        margin-top: 22px;
+        margin-bottom: 10px;
+        padding-bottom: 6px;
+        font-size: 18px;
+        border-bottom: 1px solid var(--line);
+      }
+      h3 { margin-bottom: 8px; font-size: 14px; }
+      p { margin: 8px 0; font-size: 12px; line-height: 1.55; }
+      ul, ol { margin: 8px 0 10px 18px; padding: 0; }
+      li { margin-bottom: 6px; font-size: 12px; line-height: 1.48; }
+      .meta {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .card {
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        background: #fff;
+      }
+      .phase {
+        margin-top: 14px;
+        padding: 14px 15px;
+        border-left: 5px solid var(--teal);
+        background: #fbfefd;
+        border-top: 1px solid var(--line);
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .phase-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: var(--teal-soft);
+        color: var(--teal);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+        font-size: 11px;
+      }
+      .table th, .table td {
+        padding: 8px;
+        border: 1px solid var(--line);
+        vertical-align: top;
+        text-align: left;
+      }
+      .table th { background: #eef8f6; }
+      .highlight {
+        padding: 12px 14px;
+        border-left: 4px solid var(--gold);
+        background: #fcf7ef;
+      }
+      .footer-note {
+        margin-top: 18px;
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 10px;
+      }
+      @media print {
+        body { background: none; }
+        .page {
+          margin: 0;
+          width: auto;
+          min-height: auto;
+          padding: 14mm 14mm 12mm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <p class="eyebrow">Megvalósítási terv</p>
+        <h1>Milyen lépésekben érdemes felépíteni a könyvkiadó weboldalát</h1>
+        <p>
+          Ez a dokumentum egy ajánlott fejlesztési sorrendet ad a projekthez,
+          hogy a megvalósítás átlátható, üzletileg hasznos és technikailag
+          stabil legyen.
+        </p>
+        <div class="meta">
+          <span>Készült: 2026. 03. 31.</span>
+          <span>Projekt: ProPrint kiadói weboldal</span>
+          <span>Fókusz: fejlesztési sorrend és prioritások</span>
+        </div>
+      </section>
+
+      <h2>1. Alapelv</h2>
+      <p>
+        A projektet nem érdemes egyszerre teljes egészében felépíteni. A legjobb
+        megközelítés az, ha először elkészül az a minimálisan működő verzió,
+        amely már üzletileg használható: publikus oldal, könyvlista, kosár,
+        emailes rendelés és alap admin.
+      </p>
+      <div class="highlight">
+        <p>
+          <strong>Ajánlott stratégia:</strong> először egy működő
+          <strong>MVP</strong>, utána admin mélyítés, végül automatizálás és
+          kényelmi funkciók.
+        </p>
+      </div>
+
+      <h2>2. Javasolt megvalósítási sorrend</h2>
+
+      <section class="phase">
+        <div class="phase-header">
+          <h3>Fázis 1 - Projekt előkészítés</h3>
+          <span class="badge">0. hét</span>
+        </div>
+        <p>Először tisztázni kell, milyen oldalakat és folyamatokat támogat a rendszer.</p>
+        <ul>
+          <li>Oldaltérkép véglegesítése</li>
+          <li>Könyvadatok összegyűjtése</li>
+          <li>Tartalmi blokkok meghatározása</li>
+          <li>Brand alapok kijelölése</li>
+          <li>Infrastruktúra döntések: Vercel, MongoDB Atlas, email szolgáltató</li>
+        </ul>
+        <p><strong>Eredmény:</strong> jóváhagyott specifikáció és tartalomjegyzék.</p>
+      </section>
+
+      <section class="phase">
+        <div class="phase-header">
+          <h3>Fázis 2 - Technikai alapok felállítása</h3>
+          <span class="badge">1. hét</span>
+        </div>
+        <ul>
+          <li>Next.js + TypeScript projekt</li>
+          <li>Design rendszer és globális stílusok</li>
+          <li>Környezeti változók előkészítése</li>
+          <li>Komponensalapok felépítése</li>
+          <li>Vercel preview deploy</li>
+        </ul>
+        <p><strong>Eredmény:</strong> stabil, deployolható projektváz.</p>
+      </section>
+
+      <section class="phase">
+        <div class="phase-header">
+          <h3>Fázis 3 - Adatmodellek és backend alap</h3>
+          <span class="badge">1-2. hét</span>
+        </div>
+        <ul>
+          <li>MongoDB Atlas adatbázis létrehozása</li>
+          <li>Mongoose sémák: Books, ContentBlocks, Orders, AdminUsers</li>
+          <li>Seed adatok készítése</li>
+          <li>API route-ok vagy server actionök megtervezése</li>
+          <li>Képfeltöltési stratégia eldöntése</li>
+        </ul>
+        <p><strong>Eredmény:</strong> stabil backend-alap.</p>
+      </section>
+
+      <section class="phase">
+        <div class="phase-header">
+          <h3>Fázis 4 - Publikus weboldal megépítése</h3>
+          <span class="badge">2-3. hét</span>
+        </div>
+        <ul>
+          <li>Főoldal megépítése</li>
+          <li>Kiadóról oldal</li>
+          <li>Könyvlista oldal</li>
+          <li>Egyedi könyv adatlapok</li>
+          <li>Kontakt oldal és űrlap</li>
+        </ul>
+        <p><strong>Eredmény:</strong> bemutatható publikus oldal.</p>
+      </section>
+
+      <section class="phase">
+        <div class="phase-header">
+          <h3>Fázis 5 - Kosár és emailes rendelési folyamat</h3>
+          <span class="badge">3. hét</span>
+        </div>
+        <ul>
+          <li>Kosár állapotkezelés</li>
+          <li>Rendelési űrlap</li>
+          <li>Email sablon kialakítása</li>
+          <li>Visszaigazoló email opcionálisan</li>
+          <li>Rendelések mentése adatbázisba</li>
+        </ul>
+        <p><strong>Eredmény:</strong> valóban használható rendelési folyamat.</p>
+      </section>
+
+      <section class="phase">
+        <div class="phase-header">
+          <h3>Fázis 6 - Admin belépés és könyvkezelés</h3>
+          <span class="badge">4. hét</span>
+        </div>
+        <ul>
+          <li>Auth.js vagy egyedi admin auth</li>
+          <li>Belépési oldal és védett route-ok</li>
+          <li>Könyvek admin listázása</li>
+          <li>Új könyv létrehozása</li>
+          <li>Könyvek módosítása és archiválása</li>
+          <li>Borítófeltöltés</li>
+        </ul>
+        <p><strong>Eredmény:</strong> a kiadó önállóan tudja kezelni a katalógust.</p>
+      </section>
+
+      <section class="phase">
+        <div class="phase-header">
+          <h3>Fázis 7 - Oldaltartalmak szerkesztése adminból</h3>
+          <span class="badge">4-5. hét</span>
+        </div>
+        <ul>
+          <li>Content blokkok adatmodelljei</li>
+          <li>Főoldali és kiadóról tartalmak szerkesztése</li>
+          <li>Kontakt adatok szerkesztése</li>
+          <li>SEO mezők kezelése</li>
+          <li>Draft és Published státuszok</li>
+        </ul>
+        <p><strong>Eredmény:</strong> a tartalmak nagy része adminból menedzselhető.</p>
+      </section>
+
+      <section class="phase">
+        <div class="phase-header">
+          <h3>Fázis 8 - Minőségbiztosítás és élesítés</h3>
+          <span class="badge">5. hét</span>
+        </div>
+        <ul>
+          <li>Responsive ellenőrzés</li>
+          <li>Űrlapvalidáció és hibakezelés</li>
+          <li>SEO és Open Graph ellenőrzés</li>
+          <li>Teljesítményoptimalizálás</li>
+          <li>Domain és DNS bekötés a Vercelhez</li>
+          <li>Production kulcsok beállítása</li>
+        </ul>
+        <p><strong>Eredmény:</strong> élesben használható rendszer.</p>
+      </section>
+
+      <h2>3. Mi legyen az első MVP?</h2>
+      <div class="grid">
+        <section class="card">
+          <h3>Legyen benne</h3>
+          <ul>
+            <li>Főoldal</li>
+            <li>Kiadóról oldal</li>
+            <li>Könyvlista</li>
+            <li>Könyv adatlap</li>
+            <li>Kosár</li>
+            <li>Emailes rendelés</li>
+            <li>Kontakt oldal</li>
+            <li>Admin login</li>
+            <li>Könyv CRUD</li>
+          </ul>
+        </section>
+        <section class="card">
+          <h3>Ráér későbbre</h3>
+          <ul>
+            <li>Blog vagy hírek modul</li>
+            <li>Többnyelvűség</li>
+            <li>Kuponrendszer</li>
+            <li>Online fizetés</li>
+            <li>Számlázási integráció</li>
+            <li>Komplex riportok</li>
+            <li>Haladó jogosultságkezelés</li>
+          </ul>
+        </section>
+      </div>
+
+      <h2>4. Technikai sorrend ajánlás</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Sorrend</th>
+            <th>Terület</th>
+            <th>Miért ebben a fázisban</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Frontend alap és design</td>
+            <td>Gyorsan látható lesz a projekt és könnyebb jóváhagyni az irányt.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Adatmodellek</td>
+            <td>Későbbi admin és API fejlesztést stabilizálja.</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Emailes rendelés</td>
+            <td>Ez adja a legfontosabb üzleti funkcionalitást.</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Admin auth + könyvkezelés</td>
+            <td>A működő publikus oldal után jöhet a szerkeszthetőség.</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Tartalomkezelés</td>
+            <td>A napi használhatóságot növeli, de nem blokkolja az indulást.</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Extra funkciók</td>
+            <td>Csak az alap üzleti rendszer elkészülte után érdemes rájuk időt adni.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>5. Milyen eszközökre lesz szükség</h2>
+      <ul>
+        <li>Next.js alkalmazás Vercel deployjal</li>
+        <li>MongoDB Atlas adatbázis</li>
+        <li>Mongoose vagy hasonló ODM</li>
+        <li>Auth.js admin belépéshez</li>
+        <li>Resend vagy SMTP/Nodemailer emailhez</li>
+        <li>Cloudinary vagy S3 a borítók tárolásához</li>
+        <li>Saját domain és DNS hozzáférés</li>
+      </ul>
+
+      <h2>6. Rövid összegzés</h2>
+      <p>
+        A projektet a legjobb ebben a logikában felépíteni:
+        <strong>tervezés, technikai alap, publikus oldal, rendelési folyamat, admin</strong>.
+      </p>
+      <p>
+        Ha ezt követed, gyorsan kapsz egy működő első verziót, és utána tudod
+        fokozatosan professzionálisabbá tenni a rendszert.
+      </p>
+
+      <p class="footer-note">
+        Következő lépésként ebből sprintterv vagy konkrét backlog is készíthető.
+      </p>
+    </main>
+  </body>
+  </html>

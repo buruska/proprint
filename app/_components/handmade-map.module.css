@@ -1,0 +1,100 @@
+.map {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 480px;
+  isolation: isolate;
+}
+
+.map :global(.leaflet-pane),
+.map :global(.leaflet-top),
+.map :global(.leaflet-bottom),
+.map :global(.leaflet-control),
+.map :global(.leaflet-marker-pane),
+.map :global(.leaflet-popup-pane) {
+  z-index: 1 !important;
+}
+
+.markerRoot {
+  background: transparent;
+  border: 0;
+}
+
+.marker {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  transform: translateY(-8px);
+}
+
+.markerLabel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 10px 24px rgba(8, 48, 46, 0.16);
+}
+
+.markerHeadquarters .markerLabel {
+  background: rgba(7, 59, 58, 0.94);
+}
+
+.markerEvent .markerLabel {
+  background: rgba(139, 92, 42, 0.92);
+}
+
+.markerPin {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #fff;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(8, 48, 46, 0.16);
+}
+
+.markerHeadquarters .markerPin {
+  background: #0f766e;
+}
+
+.markerEvent .markerPin {
+  background: #b06b3c;
+}
+
+.markerPin::after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.markerHeadquarters .markerPin::after {
+  background: #0f766e;
+}
+
+.markerEvent .markerPin::after {
+  background: #b06b3c;
+}
+
+@media (max-width: 760px) {
+  .map {
+    min-height: 360px;
+  }
+
+  .markerLabel {
+    max-width: 180px;
+    min-height: 44px;
+    padding: 8px 12px;
+    white-space: normal;
+  }
+}

@@ -1,0 +1,79 @@
+﻿.sidebarHeader {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.sidebarTitle {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.08;
+}
+
+.sidebarTimer {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.sidebarTimer strong {
+  color: var(--teal-deep);
+  font-weight: 700;
+}
+
+.menu {
+  display: grid;
+  gap: 10px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text-soft);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.menuItem:hover {
+  transform: translateY(-1px);
+  background: rgba(15, 118, 110, 0.06);
+  border-color: rgba(15, 118, 110, 0.18);
+  color: var(--teal-deep);
+}
+
+.menuItemActive {
+  border-color: #0f766e;
+  background: rgba(217, 240, 237, 0.9);
+  color: var(--teal-deep);
+  box-shadow: inset 4px 0 0 #0f766e;
+}
+
+.menuItem:focus-visible {
+  outline: 2px solid rgba(13, 148, 136, 0.3);
+  outline-offset: 2px;
+}
+
+.logoutItem {
+  justify-content: center;
+  border-color: #0b3837;
+  background: linear-gradient(145deg, #0a5f59 0%, #0b3837 100%);
+  color: #fff;
+}
+
+.logoutItem:hover {
+  background: linear-gradient(145deg, #0b6b64 0%, #0d4341 100%);
+  border-color: #0d4341;
+  color: #fff;
+}

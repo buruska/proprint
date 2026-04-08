@@ -1,0 +1,59 @@
+.infoText {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.socialLink:hover {
+  color: var(--accent-strong);
+  transform: translateY(-1px);
+}
+
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(167, 198, 192, 0.75);
+  background: linear-gradient(180deg, rgba(232, 245, 242, 0.96) 0%, rgba(211, 233, 229, 0.96) 100%);
+  color: var(--accent-strong);
+  box-shadow: 0 10px 24px rgba(21, 66, 69, 0.12);
+}
+
+.socialIcon svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: block;
+  fill: currentColor;
+}
+
+.mapFrame {
+  overflow: hidden;
+  border: 1px solid rgba(167, 198, 192, 0.55);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.mapEmbed {
+  display: block;
+  width: 100%;
+  min-height: 420px;
+}
+
+@media (max-width: 760px) {
+  .mapEmbed {
+    min-height: 320px;
+  }
+}

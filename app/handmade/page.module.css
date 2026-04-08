@@ -1,0 +1,150 @@
+.brandIntro {
+  justify-items: center;
+  text-align: center;
+  gap: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background:
+    radial-gradient(circle at top center, rgba(192, 139, 54, 0.14), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(217, 240, 237, 0.84));
+}
+
+.logoWrap {
+  display: grid;
+  place-items: center;
+  width: min(220px, 100%);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.logoVideo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+.brandCopy {
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
+}
+
+.brandCopy p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.75;
+}
+
+.lead {
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.45;
+}
+
+.mapPanel {
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  align-items: stretch;
+  gap: 18px;
+  padding-top: 24px;
+}
+
+.mapFrameWrap {
+  overflow: hidden;
+  border: 1px solid rgba(167, 198, 192, 0.55);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.locationCard {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 28px;
+  border: 1px solid rgba(167, 198, 192, 0.55);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 249, 248, 0.92));
+  box-shadow: var(--shadow);
+}
+
+.locationTitle {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.05rem, 1.45vw, 1.3rem);
+  line-height: 1.18;
+}
+
+.locationAddress {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.eventsBlock {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(167, 198, 192, 0.45);
+}
+
+.eventsTitle {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.eventsList {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.eventItem {
+  display: grid;
+  gap: 4px;
+}
+
+.eventLink,
+.eventName {
+  color: var(--teal-deep);
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.eventLink:hover {
+  text-decoration: underline;
+}
+
+.eventDate {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.emptyEvents {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .mapPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .locationCard {
+    padding: 22px;
+  }
+}

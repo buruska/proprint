@@ -1,0 +1,172 @@
+﻿.stack {
+  display: grid;
+  gap: 18px;
+}
+
+.metaCard {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: rgba(217, 240, 237, 0.48);
+}
+
+.metaLabel {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.passwordField {
+  position: relative;
+  display: block;
+}
+
+.passwordField input {
+  padding-right: 58px;
+}
+
+.visibilityToggle {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #000;
+  cursor: pointer;
+}
+
+.visibilityToggle:focus-visible {
+  outline: 2px solid rgba(13, 148, 136, 0.35);
+  outline-offset: 2px;
+}
+
+.visibilityIcon {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+.passwordTools {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.suggestButton {
+  width: fit-content;
+  min-height: 44px;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.passwordHint {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.criteriaPanel {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.criteriaPanel strong {
+  color: var(--teal-deep);
+}
+
+.criteriaList {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.criteriaMet,
+.criteriaPending {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.criteriaState {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.criteriaMet {
+  color: var(--teal-deep);
+}
+
+.criteriaPending {
+  color: var(--text-soft);
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  min-width: 250px;
+}
+
+.feedback {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  line-height: 1.6;
+}
+
+.success {
+  border-color: rgba(15, 118, 110, 0.2);
+  background: rgba(217, 240, 237, 0.52);
+  color: var(--teal-deep);
+}
+
+.error {
+  border-color: rgba(185, 28, 28, 0.22);
+  background: rgba(254, 242, 242, 0.9);
+  color: #991b1b;
+}
+
+.loginLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 42px;
+  margin-top: 12px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .submitButton,
+  .suggestButton {
+    width: 100%;
+  }
+
+  .criteriaMet,
+  .criteriaPending {
+    grid-template-columns: 1fr;
+  }
+}

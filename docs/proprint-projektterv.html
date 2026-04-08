@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProPrint Kiadói Weboldal - Projektterv</title>
+    <style>
+      :root {
+        --bg: #f5f1ea;
+        --paper: #fffdf8;
+        --ink: #1f1a17;
+        --muted: #6e6259;
+        --accent: #8b3d2f;
+        --accent-soft: #ead7d1;
+        --line: #d9cec2;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background:
+          radial-gradient(circle at top right, rgba(139, 61, 47, 0.1), transparent 28%),
+          linear-gradient(180deg, #f7f3ed 0%, #efe8dd 100%);
+        color: var(--ink);
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        padding: 18mm 16mm 16mm;
+        background: var(--paper);
+      }
+
+      .hero {
+        padding: 18px 22px;
+        border: 1px solid var(--line);
+        background: linear-gradient(135deg, #fff7f2 0%, #f7efe6 100%);
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: Georgia, "Times New Roman", serif;
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      h2 {
+        margin-top: 22px;
+        margin-bottom: 10px;
+        padding-bottom: 6px;
+        font-size: 18px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h3 {
+        margin-top: 14px;
+        margin-bottom: 8px;
+        font-size: 15px;
+      }
+
+      p {
+        margin: 8px 0;
+        line-height: 1.5;
+        font-size: 12px;
+      }
+
+      ul {
+        margin: 8px 0 10px 18px;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 6px;
+        line-height: 1.45;
+        font-size: 12px;
+      }
+
+      .meta {
+        display: flex;
+        gap: 16px;
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 11px;
+        flex-wrap: wrap;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        background: #fff;
+        padding: 12px 14px;
+      }
+
+      .pill {
+        display: inline-block;
+        margin-bottom: 8px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .highlight {
+        padding: 12px 14px;
+        border-left: 4px solid var(--accent);
+        background: #fbf4f0;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+        font-size: 11px;
+      }
+
+      .table th,
+      .table td {
+        border: 1px solid var(--line);
+        padding: 8px;
+        vertical-align: top;
+        text-align: left;
+      }
+
+      .table th {
+        background: #f8f1eb;
+      }
+
+      .footer-note {
+        margin-top: 18px;
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      @media print {
+        body {
+          background: none;
+        }
+
+        .page {
+          margin: 0;
+          width: auto;
+          min-height: auto;
+          padding: 14mm 14mm 12mm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <p class="eyebrow">Projektterv</p>
+        <h1>Next.js alapú weboldal könyvkiadó számára</h1>
+        <p>
+          Ez a dokumentum egy első körös technikai és funkcionális terv ahhoz,
+          hogy a kiadó publikus weboldala és admin felülete stabilan,
+          bővíthetően és üzletileg használható módon elkészüljön.
+        </p>
+        <div class="meta">
+          <span>Készült: 2026. 03. 31.</span>
+          <span>Technológiai fókusz: Next.js + admin + emailes rendelés</span>
+          <span>Cél: induláshoz szükséges feladatok és eszközök áttekintése</span>
+        </div>
+      </section>
+
+      <h2>1. Projekt célja</h2>
+      <p>
+        A cél egy modern, gyors és könnyen kezelhető könyvkiadói weboldal
+        elkészítése, ahol a látogatók megismerhetik a kiadót, böngészhetik a
+        könyveket, kosárba tehetik őket, majd a rendelési igényüket emailben el
+        lehet küldeni a kiadó munkatársainak.
+      </p>
+      <p>
+        A publikus felület mellett szükséges egy jelszóval védett admin rész,
+        ahol a könyvek, az oldalszövegek és a kapcsolatfelvételi adatok is
+        szerkeszthetők.
+      </p>
+
+      <h2>2. Fő funkciók</h2>
+      <div class="grid">
+        <section class="card">
+          <span class="pill">Publikus oldal</span>
+          <ul>
+            <li>Bemutatkozó oldal a kiadóról</li>
+            <li>Könyvlista szűréssel vagy kategóriákkal</li>
+            <li>Egyedi könyv adatlap borítóval, leírással, árral</li>
+            <li>Kosár funkció</li>
+            <li>Rendelési adatok elküldése emailben</li>
+            <li>Kontakt oldal és kapcsolatfelvételi űrlap</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="pill">Admin felület</span>
+          <ul>
+            <li>Belépés jogosultságkezeléssel</li>
+            <li>Új könyv feltöltése</li>
+            <li>Meglévő könyv módosítása vagy archiválása</li>
+            <li>Oldaltartalmak szerkesztése</li>
+            <li>Kapcsolati adatok és beállítások módosítása</li>
+            <li>Beérkező rendelések naplózása opcionálisan</li>
+          </ul>
+        </section>
+      </div>
+
+      <h2>3. Ajánlott technológiai stack</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Terület</th>
+            <th>Ajánlott megoldás</th>
+            <th>Miért jó választás</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Frontend + backend</td>
+            <td>Next.js App Router + TypeScript</td>
+            <td>
+              Egy projektben kezelhető a weboldal, az admin és a szerveroldali
+              logika.
+            </td>
+          </tr>
+          <tr>
+            <td>Stílusozás</td>
+            <td>Tailwind CSS</td>
+            <td>Gyors fejlesztés, konzisztens komponensalapú UI.</td>
+          </tr>
+          <tr>
+            <td>Adatbázis</td>
+            <td>MongoDB Atlas + Mongoose</td>
+            <td>
+              Jól működik könyv- és tartalomjellegű adatokkal, gyors indulást ad
+              és egyszerű admin CRUD-hoz kényelmes.
+            </td>
+          </tr>
+          <tr>
+            <td>Hitelesítés</td>
+            <td>Auth.js vagy egyedi admin auth</td>
+            <td>Biztonságos admin belépéshez szükséges.</td>
+          </tr>
+          <tr>
+            <td>Email küldés</td>
+            <td>Resend vagy SMTP alapú Nodemailer</td>
+            <td>
+              A rendelési kosár és a kontakt űrlap is megbízhatóan emailben
+              továbbítható.
+            </td>
+          </tr>
+          <tr>
+            <td>Képfeltöltés</td>
+            <td>Cloudinary vagy S3 kompatibilis tárhely</td>
+            <td>
+              Könyvborítók és admin feltöltött képek biztonságos tárolására.
+            </td>
+          </tr>
+          <tr>
+            <td>Hosztolás</td>
+            <td>Vercel</td>
+            <td>Next.js projekthez kényelmes deploy, preview és skálázás.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="highlight">
+        <p>
+          <strong>Ajánlás:</strong> első verzióhoz a <strong>MongoDB Atlas</strong>
+          teljesen jó választás. Ha később nagyon összetett riportok,
+          készletkezelés vagy pénzügyi integráció jönne, akkor lehet
+          PostgreSQL-re váltani vagy eleve azt választani.
+        </p>
+      </div>
+
+      <h2>4. Szükséges adatmodellek</h2>
+      <div class="grid">
+        <section class="card">
+          <h3>Books</h3>
+          <ul>
+            <li>Cím</li>
+            <li>Szerző</li>
+            <li>ISBN</li>
+            <li>Ár</li>
+            <li>Leírás</li>
+            <li>Borítókép</li>
+            <li>Készleten van-e</li>
+            <li>Kategória / címkék</li>
+            <li>Slug az URL-hez</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h3>Pages / Site Content</h3>
+          <ul>
+            <li>Rólunk oldal szövege</li>
+            <li>Főoldali kiemelések</li>
+            <li>Kontakt adatok</li>
+            <li>Lábléc tartalmak</li>
+            <li>SEO címek és leírások</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h3>Orders</h3>
+          <ul>
+            <li>Megrendelt könyvek listája</li>
+            <li>Vásárló neve</li>
+            <li>Email címe</li>
+            <li>Telefonszám</li>
+            <li>Szállítási adatok</li>
+            <li>Megjegyzés</li>
+            <li>Küldés ideje</li>
+            <li>Státusz opcionálisan</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h3>Admins</h3>
+          <ul>
+            <li>Név</li>
+            <li>Email</li>
+            <li>Jelszó hash</li>
+            <li>Szerepkör</li>
+            <li>Utolsó belépés</li>
+          </ul>
+        </section>
+      </div>
+
+      <h2>5. Rendelési folyamat javaslat</h2>
+      <ol>
+        <li>A látogató könyveket tesz a kosárba.</li>
+        <li>Megadja a nevét, email címét, telefonszámát és rendelési adatait.</li>
+        <li>
+          A rendszer összeállít egy strukturált rendelési emailt a kiadó
+          részére.
+        </li>
+        <li>
+          Opcionálisan automatikus visszaigazoló email is megy a vásárlónak.
+        </li>
+        <li>
+          Az admin felületen a rendelés el is menthető, így utólag követhető.
+        </li>
+      </ol>
+      <p>
+        Ez a megoldás egyszerűbb, mint egy teljes online fizetési rendszer, és
+        jól illik olyan kiadókhoz, ahol a megrendelések kézi feldolgozása
+        történik.
+      </p>
+
+      <h2>6. Admin felület részletei</h2>
+      <ul>
+        <li>Belépési oldal adminok számára</li>
+        <li>Könyvlista táblázatos nézetben kereséssel</li>
+        <li>Új könyv létrehozása űrlapon keresztül</li>
+        <li>Képfeltöltés könyvborítókhoz</li>
+        <li>Oldalszövegek szerkesztése egyszerű admin űrlapokkal</li>
+        <li>Kontakt adatok és közösségi linkek módosítása</li>
+        <li>Opcionális rendelésnapló és kontaktüzenet-lista</li>
+      </ul>
+
+      <h2>7. Kiegészítő elemek, amik erősen ajánlottak</h2>
+      <ul>
+        <li>SEO alapbeállítások minden oldalhoz és könyvhöz</li>
+        <li>GDPR / adatkezelési tájékoztató és cookie kezelés, ha szükséges</li>
+        <li>Spam védelem a kontakt és rendelési űrlapokon</li>
+        <li>Responsive megjelenés mobilon, tableten és desktopon</li>
+        <li>Képoptimalizálás a gyors betöltéshez</li>
+        <li>Biztonsági mentés az adatbázisról és médiatáról</li>
+      </ul>
+
+      <h2>8. Fejlesztési lépések</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Fázis</th>
+            <th>Feladat</th>
+            <th>Eredmény</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Tervezés</td>
+            <td>Oldaltérkép, tartalmak, adatmodellek, admin igények pontosítása</td>
+            <td>Jóváhagyott specifikáció</td>
+          </tr>
+          <tr>
+            <td>2. Projekt setup</td>
+            <td>Next.js projekt, Tailwind, TypeScript, környezeti változók</td>
+            <td>Fejlesztői alapok készen</td>
+          </tr>
+          <tr>
+            <td>3. Adatbázis</td>
+            <td>MongoDB bekötés, sémák, seed adatok</td>
+            <td>Működő adatréteg</td>
+          </tr>
+          <tr>
+            <td>4. Publikus oldal</td>
+            <td>Főoldal, rólunk, könyvlista, könyv adatlap, kontakt</td>
+            <td>Látható ügyféloldal</td>
+          </tr>
+          <tr>
+            <td>5. Kosár és rendelés</td>
+            <td>Kosárkezelés, űrlap, email küldés, validáció</td>
+            <td>Működő rendelési folyamat</td>
+          </tr>
+          <tr>
+            <td>6. Admin</td>
+            <td>Login, CRUD műveletek, tartalomszerkesztés</td>
+            <td>Szerkeszthető rendszer</td>
+          </tr>
+          <tr>
+            <td>7. Teszt és átadás</td>
+            <td>Hibajavítás, tartalomfeltöltés, deploy</td>
+            <td>Élesíthető oldal</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>9. Mire lesz szükséged a fejlesztéshez</h2>
+      <ul>
+        <li>Domain név</li>
+        <li>Hosztolási fiók, például Vercel</li>
+        <li>MongoDB Atlas fiók és adatbázis</li>
+        <li>Email küldő szolgáltatás vagy SMTP hozzáférés</li>
+        <li>Logó, arculati elemek, színek, tipográfia</li>
+        <li>Könyvadatok: cím, szerző, leírás, ár, borító, ISBN</li>
+        <li>Kapcsolati adatok és jogi szövegek</li>
+        <li>Admin felhasználók listája</li>
+      </ul>
+
+      <h2>10. Javasolt első MVP</h2>
+      <p>
+        Érdemes első körben az alábbiakat elkészíteni: főoldal, rólunk oldal,
+        könyvlista, könyv adatlap, kosár, emailes rendelés, kontakt oldal,
+        admin bejelentkezés, könyvkezelés és alap tartalomszerkesztés.
+      </p>
+      <p>
+        A későbbi körökben jöhet blog, hírek, készletkezelés, többnyelvűség,
+        kuponok, online fizetés vagy számlázási integráció.
+      </p>
+
+      <h2>11. Rövid összegzés</h2>
+      <p>
+        A projekt technikailag jól megvalósítható egyetlen Next.js alkalmazásban.
+        Az első verzióhoz a legpraktikusabb összeállítás:
+        <strong>Next.js + TypeScript + Tailwind + MongoDB Atlas + Auth.js + Resend/Nodemailer + Vercel</strong>.
+      </p>
+      <p>
+        Ez elég rugalmas lesz ahhoz, hogy a kiadó saját maga tudja kezelni a
+        könyveket és a tartalmakat, miközben a rendelési folyamat egyszerű és
+        üzletileg gyorsan bevezethető marad.
+      </p>
+
+      <p class="footer-note">
+        Következő lépésként ebből a tervből készíthető részletes adatbázis-séma,
+        oldalstruktúra, majd egy induló Next.js projekt is.
+      </p>
+    </main>
+  </body>
+  </html>

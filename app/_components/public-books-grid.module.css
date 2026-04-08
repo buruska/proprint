@@ -1,0 +1,404 @@
+﻿.section {
+  display: grid;
+  gap: 20px;
+}
+
+.controls {
+  display: grid;
+  gap: 18px;
+}
+
+.topControls {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.controlsAside {
+  display: grid;
+  flex: 0 0 240px;
+  gap: 12px;
+  justify-items: stretch;
+}
+
+.searchField,
+.sortField {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.searchField {
+  flex: 1 1 420px;
+  max-width: 560px;
+}
+
+.sortField {
+  min-width: 0;
+}
+
+.searchField span,
+.sortField span {
+  font-size: 0.92rem;
+}
+
+.searchInput {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(7, 59, 58, 0.18);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text);
+}
+
+.ebooksButton {
+  justify-self: end;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid rgba(15, 118, 110, 0.26);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(217, 240, 237, 0.82));
+  box-shadow:
+    0 10px 24px rgba(8, 48, 46, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  color: var(--teal-deep);
+  font-weight: 700;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.ebooksButton:hover {
+  transform: translateY(-1px);
+  border-color: rgba(15, 118, 110, 0.42);
+}
+
+.ebooksButton:focus-visible {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow:
+    0 0 0 3px rgba(15, 118, 110, 0.14),
+    0 12px 26px rgba(8, 48, 46, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.sortControl {
+  position: relative;
+}
+
+.sortControl::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--teal-deep);
+  border-bottom: 2px solid var(--teal-deep);
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+  opacity: 0.82;
+}
+
+.sortSelect {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 46px 0 16px;
+  border: 1px solid rgba(15, 118, 110, 0.24);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(217, 240, 237, 0.76));
+  box-shadow:
+    0 10px 24px rgba(8, 48, 46, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  color: var(--teal-deep);
+  font-weight: 700;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.sortField:hover .sortSelect {
+  transform: translateY(-1px);
+  border-color: rgba(15, 118, 110, 0.42);
+}
+
+.sortSelect:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow:
+    0 0 0 3px rgba(15, 118, 110, 0.14),
+    0 12px 26px rgba(8, 48, 46, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filterCheckbox,
+.filterCheckboxActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid rgba(7, 59, 58, 0.18);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.filterCheckbox input,
+.filterCheckboxActive input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--teal);
+}
+
+.filterCheckboxActive {
+  background: rgba(15, 118, 110, 0.12);
+  border-color: var(--teal);
+  color: var(--teal-deep);
+}
+
+.filterCheckbox:hover,
+.filterCheckboxActive:hover {
+  transform: translateY(-1px);
+}
+
+.resultCount,
+.emptyState {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 56px 34px;
+  padding-top: 16px;
+  justify-items: center;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(7, 34, 33, 0.48);
+  backdrop-filter: blur(8px);
+}
+
+.modalPanel {
+  position: relative;
+  width: min(560px, 100%);
+  display: grid;
+  gap: 18px;
+  padding: 40px 44px;
+  background: rgba(248, 252, 251, 0.98);
+  border: 1px solid rgba(167, 198, 192, 0.75);
+  box-shadow: 0 22px 60px rgba(7, 59, 58, 0.18);
+  text-align: center;
+}
+
+.modalCloseButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(7, 59, 58, 0.18);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--teal-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.modalTitle {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.35rem, 2vw, 1.6rem);
+  line-height: 1.08;
+}
+
+.modalText {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.modalButton {
+  justify-self: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+  color: white;
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topControls,
+  .filterRow {
+    align-items: flex-start;
+  }
+
+  .controlsAside,
+  .sortField {
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .ebooksButton {
+    justify-self: start;
+  }
+
+  .modalBackdrop {
+    padding: 16px;
+  }
+
+  .modalPanel {
+    width: min(100%, 560px);
+    padding: 56px 22px 28px;
+  }
+}
+
+
+.ebooksModalPanel {
+  width: min(760px, 100%);
+  text-align: left;
+}
+
+.ebooksList {
+  display: grid;
+  gap: 16px;
+}
+
+.ebookCard {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid rgba(167, 198, 192, 0.68);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.ebookCoverWrap {
+  width: 108px;
+}
+
+.ebookCover {
+  display: block;
+  width: 108px;
+  height: 144px;
+  object-fit: contain;
+  border: 1px solid rgba(167, 198, 192, 0.8);
+  padding: 8px;
+  background: #f4f8f7;
+}
+
+.ebookMeta {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ebookAuthor {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.ebookTitle {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.3rem;
+  line-height: 1.12;
+  color: var(--text);
+}
+
+.ebookFormats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ebookLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  background: rgba(217, 240, 237, 0.72);
+  color: var(--teal-deep);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ebookLink:hover {
+  background: rgba(217, 240, 237, 0.95);
+}
+
+@media (max-width: 560px) {
+  .ebooksModalPanel {
+    padding: 56px 18px 24px;
+  }
+
+  .ebookCard {
+    grid-template-columns: 1fr;
+  }
+
+  .ebookCoverWrap {
+    width: 100%;
+  }
+
+  .ebookCover {
+    width: 120px;
+    height: 160px;
+  }
+}

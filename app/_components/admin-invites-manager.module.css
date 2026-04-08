@@ -1,0 +1,308 @@
+.stack {
+  display: grid;
+  gap: 24px;
+}
+
+.heroHeader,
+.listHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.heroHeader h3,
+.listHeader h3,
+.modalHeader h3,
+.adminName {
+  margin: 0;
+}
+
+.heroHeader p,
+.listHeader p,
+.modalHeader p,
+.selectionSummary,
+.adminEmail,
+.permissionsLabel,
+.emptyState,
+.adminCount,
+.deleteHint,
+.confirmText {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.inviteButton {
+  min-height: 46px;
+  padding: 0 18px;
+  white-space: nowrap;
+}
+
+.permissionPreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.permissionChip,
+.permissionPill,
+.permissionPillStrong,
+.permissionPillMuted,
+.roleBadge,
+.protectedBadge,
+.currentBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.permissionChip,
+.permissionPill,
+.currentBadge {
+  background: rgba(217, 240, 237, 0.48);
+  color: var(--teal-deep);
+}
+
+.permissionPillStrong,
+.roleBadge {
+  background: rgba(15, 118, 110, 0.12);
+  border-color: rgba(15, 118, 110, 0.26);
+  color: var(--teal-deep);
+}
+
+.permissionPillMuted {
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--text-soft);
+}
+
+.protectedBadge {
+  background: rgba(11, 95, 88, 0.92);
+  border-color: rgba(11, 95, 88, 0.92);
+  color: #fff;
+}
+
+.adminCount {
+  font-weight: 700;
+}
+
+.adminList {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.adminRow {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid rgba(167, 198, 192, 0.55);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow);
+}
+
+.adminMain,
+.adminPermissions,
+.adminActions {
+  display: grid;
+  gap: 10px;
+}
+
+.adminActions {
+  justify-content: end;
+}
+
+.adminActions button {
+  justify-self: end;
+}
+
+.adminHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.adminName {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  line-height: 1.08;
+  color: var(--text);
+}
+
+.badges,
+.permissionsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.permissionsLabel,
+.confirmLabel {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.feedback {
+  margin: 28px 0 0;
+  padding: 22px 14px 12px;
+  border: 1px solid transparent;
+}
+
+.success {
+  border-color: rgba(15, 118, 110, 0.2);
+  background: rgba(217, 240, 237, 0.52);
+  color: var(--teal-deep);
+}
+
+.error {
+  border-color: rgba(185, 28, 28, 0.22);
+  background: rgba(254, 242, 242, 0.9);
+  color: #991b1b;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(7, 34, 33, 0.48);
+  backdrop-filter: blur(8px);
+}
+
+.modalPanel {
+  width: min(720px, 100%);
+  max-height: min(90vh, 860px);
+  overflow: auto;
+  display: grid;
+  gap: 24px;
+  padding: 32px;
+  background: rgba(248, 252, 251, 0.98);
+  border: 1px solid rgba(167, 198, 192, 0.75);
+  box-shadow: 0 22px 60px rgba(7, 59, 58, 0.18);
+}
+
+.confirmModalPanel {
+  width: min(560px, 100%);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.closeButton {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(7, 59, 58, 0.18);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--teal-deep);
+  font-weight: 700;
+}
+
+.confirmMeta {
+  display: grid;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.permissionFieldset {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.permissionFieldset legend {
+  padding: 0 8px;
+  color: var(--teal-deep);
+  font-weight: 700;
+}
+
+.permissionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.permissionGrid label.permissionOption,
+.permissionGrid label.permissionOptionActive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(7, 59, 58, 0.18);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text-soft);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.permissionGrid label.permissionOption span,
+.permissionGrid label.permissionOptionActive span {
+  display: block;
+  line-height: 1;
+}
+
+.permissionGrid label.permissionOption input,
+.permissionGrid label.permissionOptionActive input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--teal);
+}
+
+.permissionOptionActive {
+  border-color: var(--teal);
+  background: rgba(217, 240, 237, 0.78);
+  color: var(--teal-deep);
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 720px) {
+  .modalPanel {
+    padding: 24px 20px;
+  }
+
+  .permissionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .adminActions {
+    justify-content: start;
+  }
+
+  .adminActions button {
+    justify-self: start;
+  }
+}
+
+

@@ -1,0 +1,46 @@
+.passwordField {
+  position: relative;
+  display: block;
+}
+
+.passwordField input {
+  padding-right: 58px;
+}
+
+.visibilityToggle {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #000;
+  cursor: pointer;
+}
+
+.visibilityToggle:focus-visible {
+  outline: 2px solid rgba(13, 148, 136, 0.35);
+  outline-offset: 2px;
+}
+
+.visibilityIcon {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+.helpRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+}
+
+.secondaryText {
+  color: var(--teal);
+  line-height: 1.5;
+}

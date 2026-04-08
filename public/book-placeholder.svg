@@ -1,0 +1,22 @@
+<svg width="1200" height="1600" viewBox="0 0 1200 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1600" fill="#F4F8F7"/>
+  <rect x="70" y="70" width="1060" height="1460" fill="#FBFDFC" stroke="#A7C6C0" stroke-width="8"/>
+  <rect x="120" y="120" width="72" height="1360" fill="#0B5F58"/>
+  <rect x="192" y="120" width="18" height="1360" fill="#D9F0ED"/>
+  <rect x="270" y="210" width="660" height="820" fill="url(#coverGlow)"/>
+  <rect x="270" y="210" width="660" height="820" stroke="#0F766E" stroke-width="6"/>
+  <path d="M430 430H770V810H430V430Z" fill="#FBFDFC" fill-opacity="0.92"/>
+  <path d="M470 470H730V770H470V470Z" stroke="#0F766E" stroke-width="18"/>
+  <path d="M520 370V870" stroke="#0F766E" stroke-width="14"/>
+  <path d="M680 370V870" stroke="#0F766E" stroke-width="14"/>
+  <rect x="270" y="1120" width="540" height="36" fill="#0F766E"/>
+  <rect x="270" y="1192" width="430" height="26" fill="#A7C6C0"/>
+  <rect x="270" y="1260" width="500" height="26" fill="#A7C6C0"/>
+  <rect x="270" y="1328" width="380" height="26" fill="#A7C6C0"/>
+  <defs>
+    <linearGradient id="coverGlow" x1="270" y1="210" x2="930" y2="1030" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D9F0ED"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+  </defs>
+</svg>
