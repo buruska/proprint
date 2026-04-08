@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 
 import { PublicBooksGrid } from "@/app/_components/public-books-grid";
 import { type BookStatus } from "@/lib/book-status";
@@ -6,7 +6,11 @@ import { EBOOK_STATUS_VALUES, type EbookStatus } from "@/lib/ebook-status";
 import { BookModel } from "@/lib/models/book";
 import { EbookModel } from "@/lib/models/ebook";
 import { connectToDatabase } from "@/lib/mongodb";
-import { normalizeLegacyBookDisplayText, normalizeRichTextToPlainText, repairLegacyRomanianText } from "@/lib/utils";
+import {
+  normalizeLegacyBookDisplayText,
+  normalizeRichTextToPlainText,
+  repairLegacyRomanianText,
+} from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Könyveink",
@@ -15,6 +19,24 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const VISIBLE_BOOK_STATUSES = ["in-stock", "preorder", "unavailable"] as const;
+
+function normalizeOptionalString(value: unknown, fallback = "") {
+  return typeof value === "string" ? value.trim() || fallback : fallback;
+}
+
+function normalizeIsoDate(value: unknown) {
+  if (!value) {
+    return "";
+  }
+
+  const date = value instanceof Date ? value : new Date(String(value));
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toISOString().slice(0, 10);
+}
 
 export default async function BooksPage() {
   await connectToDatabase();
@@ -46,19 +68,17 @@ export default async function BooksPage() {
       description: repairLegacyRomanianText(normalizeRichTextToPlainText(book.description ?? "")),
       publicationYear:
         typeof book.publicationYear === "number" ? book.publicationYear : null,
-      publicationDate: book.publicationDate
-        ? new Date(book.publicationDate).toISOString().slice(0, 10)
-        : "",
-      isbn: book.isbn?.trim() || "",
+      publicationDate: normalizeIsoDate(book.publicationDate),
+      isbn: normalizeOptionalString(book.isbn),
       pageCount: typeof book.pageCount === "number" ? book.pageCount : null,
       keywords: Array.isArray(book.keywords)
         ? book.keywords
             .filter((keyword: unknown): keyword is string => typeof keyword === "string")
             .map((keyword: string) => normalizeDisplayText(keyword))
         : [],
-      size: book.size?.trim() || "",
+      size: normalizeOptionalString(book.size),
       price: typeof book.price === "number" ? book.price : 0,
-      coverImageUrl: book.coverImageUrl?.trim() || "/book-placeholder.svg",
+      coverImageUrl: normalizeOptionalString(book.coverImageUrl, "/book-placeholder.svg"),
       status: book.status as BookStatus,
     };
   });
@@ -73,10 +93,10 @@ export default async function BooksPage() {
         id: String(ebook._id),
         title: normalizeLegacyBookDisplayText(ebook.title ?? "Cím nélkül"),
         author: normalizeLegacyBookDisplayText(ebook.author ?? "Szerző nélkül"),
-        coverImageUrl: ebook.coverImageUrl?.trim() || "/book-placeholder.svg",
-        pdfUrl: ebook.pdfUrl?.trim() || "",
-        epubUrl: ebook.epubUrl?.trim() || "",
-        mobiUrl: ebook.mobiUrl?.trim() || "",
+        coverImageUrl: normalizeOptionalString(ebook.coverImageUrl, "/book-placeholder.svg"),
+        pdfUrl: normalizeOptionalString(ebook.pdfUrl),
+        epubUrl: normalizeOptionalString(ebook.epubUrl),
+        mobiUrl: normalizeOptionalString(ebook.mobiUrl),
         status,
       };
     })
