@@ -6,7 +6,6 @@ import type { Map as LeafletMap } from "leaflet";
 import styles from "./handmade-map.module.css";
 
 const MAP_CENTER: [number, number] = [46.3665513, 25.7997897];
-const HEADQUARTERS_LABEL = "Pro-Print Könyvkiadó";
 
 type HandmadeMapEvent = {
   id: string;
@@ -47,14 +46,11 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-function createMarkerIcon(label: string, variant: "headquarters" | "event") {
-  const modifierClass =
-    variant === "headquarters" ? styles.markerHeadquarters : styles.markerEvent;
-
+function createMarkerIcon(label: string) {
   return {
     className: styles.markerRoot,
     html: `
-      <div class="${styles.marker} ${modifierClass}">
+      <div class="${styles.marker} ${styles.markerEvent}">
         <span class="${styles.markerLabel}">${escapeHtml(label)}</span>
         <span class="${styles.markerPin}" aria-hidden="true"></span>
       </div>
@@ -83,7 +79,7 @@ export function HandmadeMap({ events }: { events: HandmadeMapEvent[] }) {
       }
 
       const map = L.map(containerRef.current, {
-        scrollWheelZoom: false,
+        scrollWheelZoom: true,
         zoomControl: true,
       }).setView(MAP_CENTER, 16);
 
@@ -94,10 +90,7 @@ export function HandmadeMap({ events }: { events: HandmadeMapEvent[] }) {
         maxZoom: 19,
       }).addTo(map);
 
-      const headquartersIcon = L.divIcon(createMarkerIcon(HEADQUARTERS_LABEL, "headquarters"));
-      const markerPoints: Array<[number, number]> = [MAP_CENTER];
-
-      L.marker(MAP_CENTER, { icon: headquartersIcon }).addTo(map);
+      const markerPoints: Array<[number, number]> = [];
 
       for (const event of events) {
         const coordinates = parseCoordinates(event.coordinates);
@@ -106,9 +99,14 @@ export function HandmadeMap({ events }: { events: HandmadeMapEvent[] }) {
           continue;
         }
 
-        const eventIcon = L.divIcon(createMarkerIcon(event.name, "event"));
+        const eventIcon = L.divIcon(createMarkerIcon(event.name));
         L.marker(coordinates, { icon: eventIcon }).addTo(map);
         markerPoints.push(coordinates);
+      }
+
+      if (markerPoints.length === 1) {
+        map.setView(markerPoints[0], 16);
+        return;
       }
 
       if (markerPoints.length > 1) {
@@ -125,5 +123,6 @@ export function HandmadeMap({ events }: { events: HandmadeMapEvent[] }) {
     };
   }, [events]);
 
-  return <div ref={containerRef} className={styles.map} aria-label="Pro-Print Könyvkiadó és handmade rendezvények térkép" />;
+  return <div ref={containerRef} className={styles.map} aria-label="Handmade rendezvények térkép" />;
 }
+

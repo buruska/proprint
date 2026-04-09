@@ -1,10 +1,11 @@
-﻿export const ADMIN_PERMISSION_VALUES = [
+export const ADMIN_PERMISSION_VALUES = [
   "orders",
   "admins",
   "about",
   "books",
   "ebooks",
   "handmade",
+  "events",
   "services",
   "contact",
   "content",
@@ -25,6 +26,7 @@ export const ADMIN_PERMISSION_LABELS: Record<AdminPermission, string> = {
   books: "Könyvek",
   ebooks: "E-könyvek",
   handmade: "Handmade",
+  events: "Rendezvények",
   services: "Szolgáltatások",
   contact: "Kapcsolat",
   content: "Tartalom",
@@ -47,6 +49,7 @@ export const ADMIN_NAVIGATION_LINKS: Array<{
   { href: "/admin/books", label: "Könyvek", permission: "books" },
   { href: "/admin/ebooks", label: "E-könyvek", permission: "ebooks" },
   { href: "/admin/handmade", label: "Handmade", permission: "handmade" },
+  { href: "/admin/rendezvenyek", label: "Rendezvények", permission: "events" },
   { href: "/admin/services", label: "Szolgáltatások", permission: "services" },
   { href: "/admin/contact", label: "Kapcsolat", permission: "contact" },
   { href: "/admin/content", label: "Tartalom", permission: "content" },
@@ -159,6 +162,10 @@ export function getAdminPermissionForPath(pathname: string): AdminPermission | n
 
   if (pathname === "/admin/handmade") {
     return "handmade";
+  }
+
+  if (pathname === "/admin/rendezvenyek") {
+    return "events";
   }
 
   if (pathname === "/admin/services") {

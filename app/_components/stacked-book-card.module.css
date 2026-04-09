@@ -140,7 +140,7 @@
 .modalBackdrop {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -406,6 +406,7 @@
     width: 100%;
   }
 }
+
 
 
 

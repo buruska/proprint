@@ -10,6 +10,7 @@ const navItems = [
   { href: "/about", label: "Kiadóról" },
   { href: "/books", label: "Könyveink" },
   { href: "/handmade", label: "Handmade" },
+  { href: "/rendezvenyek", label: "Rendezvények" },
   { href: "/services", label: "Szolgáltatásaink" },
   { href: "/contact", label: "Kapcsolat" },
 ];

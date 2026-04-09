@@ -2,6 +2,16 @@
   align-items: flex-start;
 }
 
+.headerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.addButton {
+  min-height: 44px;
+}
+
 .savedAt {
   margin: 16px 0 0;
   color: var(--text-soft);
@@ -33,6 +43,38 @@
 .editorColumn {
   display: grid;
   gap: 12px;
+}
+
+.cardToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.orderBadge {
+  color: var(--teal-deep);
+  font-weight: 700;
+}
+
+.orderActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.orderButton,
+.removeButton {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  background: white;
+  color: var(--teal-deep);
+  font-weight: 700;
+}
+
+.removeButton {
+  color: #8f2d24;
 }
 
 .sectionLabel,

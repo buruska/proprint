@@ -58,35 +58,66 @@ function normalizeMultilineText(value: unknown, fallback: string, maxLength: num
     return fallback;
   }
 
-  const trimmed = value.trim().slice(0, maxLength);
-  return trimmed;
+  return value.trim().slice(0, maxLength);
+}
+
+function normalizeServiceCardId(value: unknown, fallback: string) {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]+/g, "-")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+
+  return normalized || fallback;
 }
 
 export function sanitizeServicesPageInput(value: unknown): ServiceCardContent[] {
   const inputCards = Array.isArray(value) ? value : [];
 
-  return DEFAULT_SERVICE_CARDS.map((defaultCard) => {
-    const matchingCard = inputCards.find(
-      (card) =>
-        typeof card === "object" &&
-        card !== null &&
-        "id" in card &&
-        card.id === defaultCard.id,
-    ) as
-      | {
-          title?: unknown;
-          coverImageUrl?: unknown;
-          pricingText?: unknown;
-        }
-      | undefined;
+  return inputCards.reduce<ServiceCardContent[]>((result, card, index) => {
+    if (typeof card !== "object" || card === null) {
+      return result;
+    }
 
-    return {
-      id: defaultCard.id,
-      title: normalizeSingleLineText(matchingCard?.title, defaultCard.title, 160),
-      coverImageUrl: normalizeMultilineText(matchingCard?.coverImageUrl, defaultCard.coverImageUrl, 500),
-      pricingText: normalizeMultilineText(matchingCard?.pricingText, defaultCard.pricingText, 12000),
+    const record = card as {
+      id?: unknown;
+      title?: unknown;
+      coverImageUrl?: unknown;
+      pricingText?: unknown;
     };
-  });
+
+    const title = normalizeSingleLineText(record.title, "", 160);
+
+    if (!title) {
+      return result;
+    }
+
+    const fallbackId = `service-${index + 1}`;
+    let id = normalizeServiceCardId(record.id, fallbackId);
+
+    if (result.some((item) => item.id === id)) {
+      let suffix = 2;
+      while (result.some((item) => item.id === `${id}-${suffix}`)) {
+        suffix += 1;
+      }
+      id = `${id}-${suffix}`;
+    }
+
+    result.push({
+      id,
+      title,
+      coverImageUrl: normalizeMultilineText(record.coverImageUrl, "", 500),
+      pricingText: normalizeMultilineText(record.pricingText, "", 12000),
+    });
+
+    return result;
+  }, []);
 }
 
 export async function getServicesPageContent(): Promise<ServicesPageContent> {
@@ -101,8 +132,10 @@ export async function getServicesPageContent(): Promise<ServicesPageContent> {
     };
   }
 
+  const cards = sanitizeServicesPageInput(page.cards);
+
   return {
-    cards: sanitizeServicesPageInput(page.cards),
+    cards: cards.length > 0 ? cards : sanitizeServicesPageInput(DEFAULT_SERVICE_CARDS),
     updatedAt:
       page.updatedAt instanceof Date
         ? page.updatedAt.toISOString()

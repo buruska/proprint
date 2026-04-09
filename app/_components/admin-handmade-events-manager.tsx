@@ -500,10 +500,10 @@ export function AdminHandmadeEventsManager({
       <div className="admin-card">
         <div className={`admin-card__header ${styles.header}`}>
           <div>
-            <p className="eyebrow">Handmade</p>
+            <p className="eyebrow">Rendezvények</p>
             <h3>Rendezvények</h3>
             <p className="admin-meta-note">
-              Itt tudod előkészíteni a handmade oldalhoz kapcsolódó rendezvényhelyszíneket.
+              Itt tudod felvenni, módosítani és törölni a nyilvános rendezvénylistában megjelenő eseményeket.
             </p>
           </div>
 
@@ -806,3 +806,4 @@ export function AdminHandmadeEventsManager({
     </>
   );
 }
+

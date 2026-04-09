@@ -58,6 +58,13 @@ export async function PUT(request: Request) {
 
   const cards = sanitizeServicesPageInput(payload.cards);
 
+  if (cards.length === 0) {
+    return NextResponse.json(
+      { message: "Legalább egy szolgáltatás-kártya szükséges." },
+      { status: 400 },
+    );
+  }
+
   await connectToDatabase();
 
   const updatedPage = await ServicesPageModel.findOneAndUpdate(

@@ -47,7 +47,7 @@
 }
 
 .markerEvent .markerLabel {
-  background: rgba(139, 92, 42, 0.92);
+  background: var(--teal-deep);
 }
 
 .markerPin {
@@ -65,7 +65,7 @@
 }
 
 .markerEvent .markerPin {
-  background: #b06b3c;
+  background: var(--teal-deep);
 }
 
 .markerPin::after {
@@ -83,7 +83,7 @@
 }
 
 .markerEvent .markerPin::after {
-  background: #b06b3c;
+  background: var(--teal-deep);
 }
 
 @media (max-width: 760px) {
@@ -98,3 +98,5 @@
     white-space: normal;
   }
 }
+
+

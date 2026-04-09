@@ -28,7 +28,7 @@ function createUnauthorizedResponse(status: "unauthenticated" | "forbidden") {
   }
 
   return NextResponse.json(
-    { message: "Nincs jogosultságod a handmade rendezvények kezeléséhez." },
+    { message: "Nincs jogosultságod a rendezvények kezeléséhez." },
     { status: 403 },
   );
 }
@@ -58,7 +58,7 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ eventId: string }> },
 ) {
-  const access = await getAuthenticatedAdminWithPermission("handmade");
+  const access = await getAuthenticatedAdminWithPermission("events");
 
   if (access.status !== "ok") {
     return createUnauthorizedResponse(access.status);
@@ -187,6 +187,8 @@ export async function PUT(
   }
 
   revalidatePath("/handmade");
+  revalidatePath("/rendezvenyek");
+  revalidatePath("/admin/rendezvenyek");
   revalidatePath("/admin/handmade");
 
   return NextResponse.json({
@@ -199,7 +201,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ eventId: string }> },
 ) {
-  const access = await getAuthenticatedAdminWithPermission("handmade");
+  const access = await getAuthenticatedAdminWithPermission("events");
 
   if (access.status !== "ok") {
     return createUnauthorizedResponse(access.status);
@@ -227,9 +229,15 @@ export async function DELETE(
   }
 
   revalidatePath("/handmade");
+  revalidatePath("/rendezvenyek");
+  revalidatePath("/admin/rendezvenyek");
   revalidatePath("/admin/handmade");
 
   return NextResponse.json({
     message: "A rendezvény törölve lett.",
   });
 }
+
+
+
+

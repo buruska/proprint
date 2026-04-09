@@ -48,6 +48,23 @@ function formatSavedAt(value: string | null) {
   }).format(date);
 }
 
+function createServiceCardId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `service-${crypto.randomUUID().slice(0, 8)}`;
+  }
+
+  return `service-${Date.now()}`;
+}
+
+function createEmptyCard(): ServiceCard {
+  return {
+    id: createServiceCardId(),
+    title: "Új szolgáltatás",
+    coverImageUrl: "",
+    pricingText: "",
+  };
+}
+
 async function optimizeServiceCoverUpload(file: File) {
   if (!COMPRESSIBLE_IMAGE_TYPES.has(file.type)) {
     return {
@@ -102,6 +119,54 @@ export function AdminServicesManager({ initialContent }: { initialContent: Servi
       setFeedback("");
     }
 
+    if (error) {
+      setError("");
+    }
+  }
+
+  function addCard() {
+    setCards((current) => [createEmptyCard(), ...current]);
+    setFeedback("");
+    setError("");
+  }
+
+  function removeCard(cardId: string) {
+    setCards((current) => current.filter((card) => card.id !== cardId));
+    setUploadMessageById((current) => {
+      const next = { ...current };
+      delete next[cardId];
+      return next;
+    });
+    if (feedback) {
+      setFeedback("");
+    }
+    if (error) {
+      setError("");
+    }
+  }
+
+  function moveCard(cardId: string, direction: "up" | "down") {
+    setCards((current) => {
+      const index = current.findIndex((card) => card.id === cardId);
+
+      if (index < 0) {
+        return current;
+      }
+
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+
+      if (targetIndex < 0 || targetIndex >= current.length) {
+        return current;
+      }
+
+      const next = [...current];
+      [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
+      return next;
+    });
+
+    if (feedback) {
+      setFeedback("");
+    }
     if (error) {
       setError("");
     }
@@ -170,6 +235,11 @@ export function AdminServicesManager({ initialContent }: { initialContent: Servi
   }
 
   function handleSave() {
+    if (cards.length === 0) {
+      setError("Legalább egy szolgáltatás-kártya szükséges.");
+      return;
+    }
+
     if (cards.some((card) => !card.title.trim())) {
       setError("Minden szolgáltatásnál adj meg címet.");
       return;
@@ -213,14 +283,19 @@ export function AdminServicesManager({ initialContent }: { initialContent: Servi
           <p className="eyebrow">Szolgáltatások</p>
           <h3>Szolgáltatás-kártyák</h3>
           <p className="admin-meta-note">
-            Itt szerkesztheted a publikus szolgáltatásoldal kártyáinak címét, borítóképét és az
-            árak modalban megjelenő szövegét.
+            Itt szerkesztheted a publikus szolgáltatásoldal kártyáinak címét, borítóképét,
+            sorrendjét és az árak modalban megjelenő szövegét.
           </p>
         </div>
 
-        <button type="button" onClick={handleSave} disabled={isBusy}>
-          {isSaving ? "Mentés folyamatban..." : "Mentés"}
-        </button>
+        <div className={styles.headerActions}>
+          <button type="button" className={styles.addButton} onClick={addCard} disabled={isBusy}>
+            Új kártya
+          </button>
+          <button type="button" onClick={handleSave} disabled={isBusy}>
+            {isSaving ? "Mentés folyamatban..." : "Mentés"}
+          </button>
+        </div>
       </div>
 
       <p className={styles.savedAt}>Utolsó mentés: {formatSavedAt(updatedAt)}</p>
@@ -229,13 +304,43 @@ export function AdminServicesManager({ initialContent }: { initialContent: Servi
       {error ? <p className={styles.error}>{error}</p> : null}
 
       <div className={styles.cardList}>
-        {cards.map((card) => {
+        {cards.map((card, index) => {
           const uploadMessage = uploadMessageById[card.id];
           const isUploadingCurrent = uploadingCardId === card.id;
 
           return (
             <section key={card.id} className={styles.editorCard}>
               <div className={styles.previewColumn}>
+                <div className={styles.cardToolbar}>
+                  <span className={styles.orderBadge}>{index + 1}.</span>
+                  <div className={styles.orderActions}>
+                    <button
+                      type="button"
+                      className={styles.orderButton}
+                      onClick={() => moveCard(card.id, "up")}
+                      disabled={isBusy || index === 0}
+                    >
+                      Fel
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.orderButton}
+                      onClick={() => moveCard(card.id, "down")}
+                      disabled={isBusy || index === cards.length - 1}
+                    >
+                      Le
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.removeButton}
+                      onClick={() => removeCard(card.id)}
+                      disabled={isBusy || cards.length === 1}
+                    >
+                      Törlés
+                    </button>
+                  </div>
+                </div>
+
                 <p className={styles.sectionLabel}>Borítókép</p>
                 <div className={styles.previewFrame}>
                   {card.coverImageUrl ? (

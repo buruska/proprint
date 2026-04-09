@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg: #f4f8f7;
   --surface: #fbfdfc;
   --surface-strong: #f2f7f6;
@@ -16,6 +16,7 @@
   --radius-md: 0;
   --radius-sm: 0;
   --footer-height: 74px;
+  --z-modal: 1300;
 }
 
 * {
@@ -1221,7 +1222,7 @@ main {
 .about-preview-modal {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1301,4 +1302,5 @@ main {
   width: 100%;
   max-width: none;
 }
+
 

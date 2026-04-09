@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
-import { AdminHandmadeEventsManager } from "@/app/_components/admin-handmade-events-manager";
-import { getHandmadeEvents } from "@/lib/handmade-events";
+import { AdminHandmadePageEditor } from "@/app/_components/admin-handmade-page-editor";
+import { getHandmadePageContent } from "@/lib/handmade-content";
 
 export const metadata: Metadata = {
   title: "Handmade",
 };
 
 export default async function AdminHandmadePage() {
-  const events = await getHandmadeEvents();
+  const content = await getHandmadePageContent();
 
-  return <AdminHandmadeEventsManager initialEvents={events} />;
+  return <AdminHandmadePageEditor initialContent={content} />;
 }

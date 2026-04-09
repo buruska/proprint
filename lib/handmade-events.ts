@@ -83,7 +83,20 @@ function sortHandmadeEvents(items: HandmadeEventListItem[]) {
 export async function getHandmadeEvents(): Promise<HandmadeEventListItem[]> {
   await cleanupExpiredHandmadeEvents();
 
-  const events = await HandmadeEventModel.find({}).lean();
+  const now = new Date();
+  const startOfTodayUtc = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+  );
+
+  const events = await HandmadeEventModel.find({
+    $or: [
+      { expiresAt: { $gt: now } },
+      {
+        expiresAt: { $exists: false },
+        endDate: { $gte: startOfTodayUtc },
+      },
+    ],
+  }).lean();
 
   return sortHandmadeEvents(events.map((event) => serializeHandmadeEvent(event)));
 }

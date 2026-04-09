@@ -1,0 +1,85 @@
+.mapPanel {
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  align-items: stretch;
+  gap: 18px;
+}
+
+.mapFrameWrap {
+  overflow: hidden;
+  border: 1px solid rgba(167, 198, 192, 0.55);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.locationCard {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 28px;
+  border: 1px solid rgba(167, 198, 192, 0.55);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 249, 248, 0.92));
+  box-shadow: var(--shadow);
+}
+
+.eventsBlock {
+  display: grid;
+  gap: 12px;
+}
+
+.eventsTitle {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.eventsList {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.eventItem {
+  display: grid;
+  gap: 4px;
+}
+
+.eventLink,
+.eventName {
+  color: var(--teal-deep);
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.eventLink:hover {
+  text-decoration: underline;
+}
+
+.eventDate {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.emptyEvents {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .mapPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .locationCard {
+    padding: 22px;
+  }
+}

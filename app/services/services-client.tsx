@@ -90,7 +90,7 @@ export function ServicesClient({ cards }: { cards: ServiceCard[] }) {
                             className={`${styles.button} ${styles.buttonPrimary}`}
                             onClick={() => setActiveServiceId(service.id)}
                           >
-                            Áraink
+                            Bővebben
                           </button>
                         </div>
                       </div>
@@ -141,3 +141,4 @@ export function ServicesClient({ cards }: { cards: ServiceCard[] }) {
     </>
   );
 }
+
