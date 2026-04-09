@@ -70,21 +70,7 @@ function getPublicationTimestamp(book: PublicBookListItem) {
   return 0;
 }
 
-function getGridColumnCount(viewportWidth: number) {
-  if (viewportWidth <= 560) {
-    return 1;
-  }
 
-  if (viewportWidth <= 820) {
-    return 2;
-  }
-
-  if (viewportWidth <= 1100) {
-    return 3;
-  }
-
-  return 5;
-}
 
 export function PublicBooksGrid({ books, ebooks }: PublicBooksGridProps) {
   const router = useRouter();
@@ -96,9 +82,6 @@ export function PublicBooksGrid({ books, ebooks }: PublicBooksGridProps) {
   const [sortBy, setSortBy] = useState<SortValue>("publication-date");
   const [isEbooksModalOpen, setIsEbooksModalOpen] = useState(false);
   const [isOrderSuccessDismissed, setIsOrderSuccessDismissed] = useState(false);
-  const [gridColumnCount, setGridColumnCount] = useState(() =>
-    typeof window === "undefined" ? 5 : getGridColumnCount(window.innerWidth),
-  );
 
   const allSelected = activeFilters.length === FILTER_OPTIONS.length;
   const hasOrderSuccess = searchParams.get("orderSuccess") === "1";
@@ -141,19 +124,6 @@ export function PublicBooksGrid({ books, ebooks }: PublicBooksGridProps) {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [closeEbooksModal, closeOrderSuccessModal, isAnyModalOpen, isEbooksModalOpen]);
-
-  useEffect(() => {
-    function updateGridColumnCount() {
-      setGridColumnCount(getGridColumnCount(window.innerWidth));
-    }
-
-    updateGridColumnCount();
-    window.addEventListener("resize", updateGridColumnCount);
-
-    return () => {
-      window.removeEventListener("resize", updateGridColumnCount);
-    };
-  }, []);
 
   const filteredBooks = useMemo(() => {
     const normalizedQuery = normalizeSearchValue(searchQuery);
@@ -288,16 +258,7 @@ export function PublicBooksGrid({ books, ebooks }: PublicBooksGridProps) {
         </div>
 
         {filteredBooks.length > 0 ? (
-          <div
-            className={styles.grid}
-            style={{
-              display: "grid",
-              gridTemplateColumns: `repeat(${gridColumnCount}, minmax(0, 1fr))`,
-              gap: "56px 34px",
-              paddingTop: "16px",
-              justifyItems: "center",
-            }}
-          >
+          <div className={styles.grid}>
             {filteredBooks.map((book) => (
               <StackedBookCard
                 key={book.id}
@@ -413,3 +374,6 @@ export function PublicBooksGrid({ books, ebooks }: PublicBooksGridProps) {
     </>
   );
 }
+
+
+
