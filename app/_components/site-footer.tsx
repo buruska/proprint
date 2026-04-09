@@ -1,3 +1,7 @@
+﻿"use client";
+
+import { usePathname } from "next/navigation";
+
 const SUPPORTERS = [
   {
     name: "NKA",
@@ -17,6 +21,12 @@ const SUPPORTERS = [
 ];
 
 export function SiteFooter() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+
   const currentYear = new Date().getFullYear();
 
   return (
