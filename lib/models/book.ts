@@ -85,7 +85,18 @@ const bookSchema = new Schema(
   },
 );
 
-bookSchema.index({ legacyId: 1 }, { unique: true, sparse: true });
+bookSchema.index(
+  { legacyId: 1 },
+  {
+    unique: true,
+    name: "legacy_id_unique_idx",
+    partialFilterExpression: {
+      legacyId: {
+        $type: "number",
+      },
+    },
+  },
+);
 bookSchema.index({ isbn: 1 });
 bookSchema.index({ title: 1 });
 bookSchema.index({ author: 1 });
@@ -94,6 +105,4 @@ bookSchema.index({ status: 1 });
 export type BookDocument = InferSchemaType<typeof bookSchema>;
 
 export const BookModel = models.Book || model("Book", bookSchema);
-
-
 

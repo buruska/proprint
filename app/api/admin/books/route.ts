@@ -1,4 +1,4 @@
-﻿import { revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { getAuthenticatedAdminWithPermission } from "@/lib/admin-auth";
 
@@ -38,6 +38,18 @@ function isValidDateInput(value: string) {
   return /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
 
+function isLegacyIdDuplicateKeyError(error: unknown) {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+
+  const duplicateKeyError = error as {
+    code?: unknown;
+    keyPattern?: Record<string, unknown>;
+  };
+
+  return duplicateKeyError.code === 11000 && duplicateKeyError.keyPattern?.legacyId === 1;
+}
 function serializeAdminBookListItem(book: {
   _id: { toString(): string } | string;
   title?: string;
@@ -234,40 +246,48 @@ export async function POST(request: Request) {
 
   await connectToDatabase();
 
-  const createdBook = await BookModel.create({
-    title: payload.title.trim(),
-    author: payload.author.trim(),
-    language: normalizedLanguage,
-    description: normalizeRichTextToPlainText(payload.description),
-    publicationYear,
-    publicationDate,
-    isbn: formatBookIsbn(payload.isbn),
-    pageCount: payload.pageCount ?? null,
-    keywords: payload.keywords
-      .map((keyword) => keyword.trim())
-      .filter(Boolean),
-    size: normalizedSize,
-    widthCm,
-    heightCm,
-    price: payload.price ?? null,
-    coverImageUrl: payload.coverImageUrl.trim(),
-    status: payload.status,
-  });
+  try {
+    const createdBook = await BookModel.create({
+      title: payload.title.trim(),
+      author: payload.author.trim(),
+      language: normalizedLanguage,
+      description: normalizeRichTextToPlainText(payload.description),
+      publicationYear,
+      publicationDate,
+      isbn: formatBookIsbn(payload.isbn),
+      pageCount: payload.pageCount ?? null,
+      keywords: payload.keywords
+        .map((keyword) => keyword.trim())
+        .filter(Boolean),
+      size: normalizedSize,
+      widthCm,
+      heightCm,
+      price: payload.price ?? null,
+      coverImageUrl: payload.coverImageUrl.trim(),
+      status: payload.status,
+    });
 
-  revalidatePath("/admin/books");
-  revalidatePath("/books");
+    revalidatePath("/admin/books");
+    revalidatePath("/books");
 
-  return NextResponse.json(
-    {
-      message: "Az új könyv sikeresen létrejött.",
-      book: serializeAdminBookListItem(createdBook.toObject()),
-    },
-    { status: 201 },
-  );
+    return NextResponse.json(
+      {
+        message: "Az új könyv sikeresen létrejött.",
+        book: serializeAdminBookListItem(createdBook.toObject()),
+      },
+      { status: 201 },
+    );
+  } catch (error) {
+    if (isLegacyIdDuplicateKeyError(error)) {
+      return NextResponse.json(
+        {
+          message: "A legacyId egyedi indexe hibasan blokkolja az uj konyvek letrehozasat. Az adatbazis index javitasa szukseges.",
+        },
+        { status: 409 },
+      );
+    }
+
+    throw error;
+  }
 }
-
-
-
-
-
 

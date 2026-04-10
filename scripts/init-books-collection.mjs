@@ -141,7 +141,18 @@ async function ensureBooksCollection() {
     }
   }
 
-  await books.createIndex({ legacyId: 1 }, { unique: true, sparse: true, name: "legacy_id_unique_idx" });
+  await books.createIndex(
+    { legacyId: 1 },
+    {
+      unique: true,
+      name: "legacy_id_unique_idx",
+      partialFilterExpression: {
+        legacyId: {
+          $type: "number",
+        },
+      },
+    },
+  );
   await books.createIndex({ isbn: 1 }, { name: "isbn_idx" });
   await books.createIndex({ title: 1 }, { name: "title_idx" });
   await books.createIndex({ author: 1 }, { name: "author_idx" });
