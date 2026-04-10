@@ -6,11 +6,13 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/index.php",
-        has: [
-          { type: "query", key: "p", value: "serv" },
-          { type: "query", key: "f", value: "3" },
-        ],
+        has: [{ type: "query", key: "p", value: "serv" }],
         destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/index.php",
+        destination: "/",
         permanent: true,
       },
     ];
