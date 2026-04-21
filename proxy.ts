@@ -46,6 +46,7 @@ export const config = {
     "/admin/handmade",
     "/admin/orders",
     "/admin/profile",
+    "/admin/rendezvenyek",
     "/admin/services",
   ],
 };
