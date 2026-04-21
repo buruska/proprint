@@ -1,42 +1,57 @@
+.infoList {
+  display: grid;
+  gap: 12px;
+}
+
+.infoRow,
+.infoLink {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
 .infoText {
   margin: 0;
   color: var(--text-soft);
   line-height: 1.7;
 }
 
-.socialLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  color: var(--text);
-  font-weight: 600;
+.infoCopy {
+  display: grid;
+  gap: 4px;
+  align-content: center;
+}
+
+.infoLink {
+  color: var(--teal-deep);
+  font-weight: 700;
   text-decoration: none;
   transition: color 180ms ease, transform 180ms ease;
 }
 
-.socialLink:hover {
+.infoLink:hover {
   color: var(--accent-strong);
   transform: translateY(-1px);
 }
 
-.socialIcon {
+.infoIcon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 0.4rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border: 1px solid rgba(167, 198, 192, 0.75);
   background: linear-gradient(180deg, rgba(232, 245, 242, 0.96) 0%, rgba(211, 233, 229, 0.96) 100%);
   color: var(--accent-strong);
   box-shadow: 0 10px 24px rgba(21, 66, 69, 0.12);
 }
 
-.socialIcon svg {
-  width: 1.2rem;
-  height: 1.2rem;
+.infoIcon svg {
+  width: 1.15rem;
+  height: 1.15rem;
   display: block;
-  fill: currentColor;
+  stroke: currentColor;
 }
 
 .mapFrame {
