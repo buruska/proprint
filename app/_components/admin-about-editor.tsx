@@ -6,6 +6,8 @@ import {
   useState,
   type ChangeEvent,
   type FormEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from "react";
 import imageCompression from "browser-image-compression";
@@ -18,6 +20,7 @@ import {
 const COMPRESSIBLE_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const MAX_IMAGE_UPLOAD_SIZE = 8 * 1024 * 1024;
 const DEFAULT_EDITOR_HTML = "<p>Új bekezdés</p>";
+const SELECTED_EDITOR_IMAGE_CLASS = "about-editor-image-selected";
 
 type ToolbarIconButtonProps = {
   label: string;
@@ -216,7 +219,15 @@ function LinkIcon() {
 
 export function AdminAboutEditor({ initialContent }: { initialContent: AboutPageContent }) {
   const editorRef = useRef<HTMLDivElement | null>(null);
+  const replaceImageInputRef = useRef<HTMLInputElement | null>(null);
   const savedSelectionRef = useRef<Range | null>(null);
+  const selectedImageRef = useRef<HTMLImageElement | null>(null);
+  const [lastSavedContent, setLastSavedContent] = useState<EditablePageContent>({
+    eyebrow: initialContent.eyebrow,
+    title: initialContent.title,
+    description: initialContent.description,
+    bodyHtml: initialContent.bodyHtml,
+  });
   const [form, setForm] = useState<EditablePageContent>({
     eyebrow: initialContent.eyebrow,
     title: initialContent.title,
@@ -228,8 +239,26 @@ export function AdminAboutEditor({ initialContent }: { initialContent: AboutPage
   const [imageFeedback, setImageFeedback] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [hasSelectedImage, setHasSelectedImage] = useState(false);
 
   const isBusy = isSaving || isUploadingImage;
+
+  function clearSelectedImage() {
+    selectedImageRef.current?.classList.remove(SELECTED_EDITOR_IMAGE_CLASS);
+    selectedImageRef.current = null;
+    setHasSelectedImage(false);
+  }
+
+  function selectImage(image: HTMLImageElement) {
+    if (selectedImageRef.current === image) {
+      return;
+    }
+
+    clearSelectedImage();
+    image.classList.add(SELECTED_EDITOR_IMAGE_CLASS);
+    selectedImageRef.current = image;
+    setHasSelectedImage(true);
+  }
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -242,6 +271,10 @@ export function AdminAboutEditor({ initialContent }: { initialContent: AboutPage
 
     if (editor.innerHTML !== nextHtml) {
       editor.innerHTML = nextHtml;
+    }
+
+    if (selectedImageRef.current && !editor.contains(selectedImageRef.current)) {
+      clearSelectedImage();
     }
   }, [form.bodyHtml]);
 
@@ -433,6 +466,90 @@ export function AdminAboutEditor({ initialContent }: { initialContent: AboutPage
     });
   }
 
+  async function uploadEditorImage(file: File) {
+    let uploadFile = file;
+    let optimizationMessage = "";
+
+    try {
+      const optimizedUpload = await optimizeContentImageUpload(file);
+      uploadFile = optimizedUpload.file;
+      optimizationMessage = optimizedUpload.sizeMessage;
+    } catch {
+      uploadFile = file;
+    }
+
+    if (uploadFile.size > MAX_IMAGE_UPLOAD_SIZE) {
+      throw new Error(
+        "A kiválasztott kép optimalizálás után is túl nagy. Válassz kisebb vagy jobban tömöríthető képet.",
+      );
+    }
+
+    const formData = new FormData();
+    formData.append("file", uploadFile);
+
+    const response = await fetch("/api/admin/uploads/content-image", {
+      method: "POST",
+      body: formData,
+    });
+
+    const payload = (await response.json().catch(() => null)) as
+      | { message?: string; url?: string }
+      | null;
+
+    if (!response.ok || !payload?.url) {
+      throw new Error(payload?.message ?? "A kép feltöltése nem sikerült.");
+    }
+
+    return {
+      url: payload.url,
+      message: payload.message ?? "A kép sikeresen feltöltve.",
+      optimizationMessage,
+    };
+  }
+
+  function formatImageActionFeedback(optimizationMessage: string, successMessage: string) {
+    return optimizationMessage
+      ? `${optimizationMessage} ${successMessage}`
+      : successMessage;
+  }
+
+  function removeSelectedImage() {
+    const selectedImage = selectedImageRef.current;
+
+    if (!selectedImage) {
+      setFeedback("Előbb jelölj ki egy képet a szerkesztőben.");
+      return;
+    }
+
+    const parentNode = selectedImage.parentNode;
+
+    if (!(parentNode instanceof Node)) {
+      clearSelectedImage();
+      return;
+    }
+
+    const offset = Array.from(parentNode.childNodes).indexOf(selectedImage);
+    parentNode.removeChild(selectedImage);
+    clearSelectedImage();
+
+    const selection = window.getSelection();
+
+    if (selection) {
+      const range = document.createRange();
+      range.setStart(parentNode, Math.max(0, Math.min(offset, parentNode.childNodes.length)));
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      savedSelectionRef.current = range.cloneRange();
+    }
+
+    editorRef.current?.focus();
+    ensureEditorHasContent();
+    syncBodyHtmlFromEditor();
+    setFeedback("");
+    setImageFeedback("A kijelölt kép törölve lett.");
+  }
+
   async function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
@@ -445,51 +562,97 @@ export function AdminAboutEditor({ initialContent }: { initialContent: AboutPage
     setIsUploadingImage(true);
 
     try {
-      let uploadFile = file;
-      let optimizationMessage = "";
-
-      try {
-        const optimizedUpload = await optimizeContentImageUpload(file);
-        uploadFile = optimizedUpload.file;
-        optimizationMessage = optimizedUpload.sizeMessage;
-      } catch {
-        uploadFile = file;
-      }
-
-      if (uploadFile.size > MAX_IMAGE_UPLOAD_SIZE) {
-        setFeedback("A kiválasztott kép optimalizálás után is túl nagy. Válassz kisebb vagy jobban tömöríthető képet.");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("file", uploadFile);
-
-      const response = await fetch("/api/admin/uploads/content-image", {
-        method: "POST",
-        body: formData,
-      });
-
-      const payload = (await response.json().catch(() => null)) as
-        | { message?: string; url?: string }
-        | null;
-
-      if (!response.ok || !payload?.url) {
-        setFeedback(payload?.message ?? "A kép feltöltése nem sikerült.");
-        return;
-      }
-
-      insertUploadedImage(payload.url);
+      const uploadedImage = await uploadEditorImage(file);
+      insertUploadedImage(uploadedImage.url);
       setImageFeedback(
-        optimizationMessage
-          ? `${optimizationMessage} ${payload.message ?? "A kép sikeresen beszúrva."}`
-          : payload.message ?? "A kép sikeresen beszúrva.",
+        formatImageActionFeedback(
+          uploadedImage.optimizationMessage,
+          uploadedImage.message || "A kép sikeresen beszúrva.",
+        ),
       );
-    } catch {
-      setFeedback("Hálózati vagy képfeldolgozási hiba történt a kép feltöltése közben.");
+    } catch (error) {
+      setFeedback(
+        error instanceof Error
+          ? error.message
+          : "Hálózati vagy képfeldolgozási hiba történt a kép feltöltése közben.",
+      );
     } finally {
       event.target.value = "";
       setIsUploadingImage(false);
     }
+  }
+
+  async function handleReplaceImage(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const selectedImage = selectedImageRef.current;
+
+    if (!selectedImage || !selectedImage.isConnected) {
+      clearSelectedImage();
+      setFeedback("Előbb jelölj ki egy képet a szerkesztőben.");
+      event.target.value = "";
+      return;
+    }
+
+    setFeedback("");
+    setImageFeedback("");
+    setIsUploadingImage(true);
+
+    try {
+      const uploadedImage = await uploadEditorImage(file);
+      selectedImage.src = uploadedImage.url;
+      syncBodyHtmlFromEditor();
+      selectImage(selectedImage);
+      setImageFeedback(
+        formatImageActionFeedback(
+          uploadedImage.optimizationMessage,
+          "A kijelölt kép sikeresen cserélve lett.",
+        ),
+      );
+    } catch (error) {
+      setFeedback(
+        error instanceof Error
+          ? error.message
+          : "Hálózati vagy képfeldolgozási hiba történt a kép cseréje közben.",
+      );
+    } finally {
+      event.target.value = "";
+      setIsUploadingImage(false);
+    }
+  }
+
+  function handleEditorMouseDown(event: ReactMouseEvent<HTMLDivElement>) {
+    if (event.target instanceof HTMLImageElement) {
+      event.preventDefault();
+      selectImage(event.target);
+      editorRef.current?.focus();
+      return;
+    }
+
+    clearSelectedImage();
+  }
+
+  function handleEditorKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+    if ((event.key === "Backspace" || event.key === "Delete") && selectedImageRef.current) {
+      event.preventDefault();
+      removeSelectedImage();
+      return;
+    }
+
+    if (event.key === "Escape" && selectedImageRef.current) {
+      clearSelectedImage();
+    }
+  }
+
+  function handleResetToLastSaved() {
+    setForm(lastSavedContent);
+    clearSelectedImage();
+    setFeedback("");
+    setImageFeedback("A szerkesztő tartalma visszaállt az utolsó mentett állapotra.");
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -523,6 +686,12 @@ export function AdminAboutEditor({ initialContent }: { initialContent: AboutPage
       }
 
       setForm({
+        eyebrow: payload.content.eyebrow,
+        title: payload.content.title,
+        description: payload.content.description,
+        bodyHtml: payload.content.bodyHtml,
+      });
+      setLastSavedContent({
         eyebrow: payload.content.eyebrow,
         title: payload.content.title,
         description: payload.content.description,
@@ -614,11 +783,13 @@ export function AdminAboutEditor({ initialContent }: { initialContent: AboutPage
               contentEditable={!isBusy}
               suppressContentEditableWarning
               onInput={syncBodyHtmlFromEditor}
+              onMouseDown={handleEditorMouseDown}
               onBlur={() => {
                 ensureEditorHasContent();
                 syncBodyHtmlFromEditor();
                 rememberSelection();
               }}
+              onKeyDown={handleEditorKeyDown}
               onKeyUp={rememberSelection}
               onMouseUp={rememberSelection}
             />
@@ -626,7 +797,7 @@ export function AdminAboutEditor({ initialContent }: { initialContent: AboutPage
         </div>
 
         <label>
-          Kép beszúrása
+          Új kép beszúrása
           <input
             type="file"
             accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
@@ -641,11 +812,53 @@ export function AdminAboutEditor({ initialContent }: { initialContent: AboutPage
         <p className="admin-meta-note">
           A feltöltött kép a kurzor aktuális helyére kerül közvetlenül a szerkesztett tartalomba.
         </p>
+        <p className="admin-meta-note">
+          Kattints egy beszúrt képre a szerkesztőben, és utána törölheted vagy ugyanott új képre cserélheted.
+        </p>
+
+        <div className="admin-form__actions about-editor-image-actions">
+          <button
+            type="button"
+            className="button-ghost about-editor-action-button"
+            onClick={() => replaceImageInputRef.current?.click()}
+            disabled={isBusy || !hasSelectedImage}
+          >
+            Kijelölt kép cseréje
+          </button>
+          <button
+            type="button"
+            className="button-ghost about-editor-action-button"
+            onClick={removeSelectedImage}
+            disabled={isBusy || !hasSelectedImage}
+          >
+            Kijelölt kép törlése
+          </button>
+        </div>
+
+        <input
+          ref={replaceImageInputRef}
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
+          className="about-editor-file-input"
+          onChange={(event) => {
+            void handleReplaceImage(event);
+          }}
+          disabled={isBusy}
+          tabIndex={-1}
+        />
 
         {imageFeedback ? <p className="admin-success-note">{imageFeedback}</p> : null}
         {feedback ? <p className="admin-success-note">{feedback}</p> : null}
 
         <div className="admin-form__actions">
+          <button
+            type="button"
+            className="button-ghost about-editor-action-button"
+            onClick={handleResetToLastSaved}
+            disabled={isBusy}
+          >
+            Mégse
+          </button>
           <button type="submit" disabled={isBusy}>
             {isSaving ? "Mentés folyamatban..." : isUploadingImage ? "Képfeltöltés folyamatban..." : "Mentés"}
           </button>

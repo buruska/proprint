@@ -1273,6 +1273,36 @@ main {
   gap: 20px;
 }
 
+.about-editor-image-actions {
+  justify-content: flex-start;
+}
+
+.about-editor-action-button {
+  min-height: 46px;
+  padding: 0 16px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--teal-deep);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.about-editor-action-button:hover,
+.about-editor-action-button:focus-visible {
+  border-color: var(--teal);
+  background: rgba(233, 248, 245, 0.98);
+  color: #072c2a;
+}
+
+.about-editor-action-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.about-editor-file-input {
+  display: none;
+}
+
 .about-editor-surface {
   width: 100%;
   min-height: 320px;
@@ -1283,6 +1313,17 @@ main {
 
 .about-editor-surface:focus {
   box-shadow: inset 0 -2px 0 var(--teal);
+}
+
+.about-editor-surface img {
+  cursor: pointer;
+}
+
+.about-editor-surface img.about-editor-image-selected {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 3px rgba(192, 139, 54, 0.28),
+    var(--shadow);
 }
 
 .about-editor-surface a,
