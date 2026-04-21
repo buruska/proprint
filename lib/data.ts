@@ -1,4 +1,4 @@
-import type { ContactMethod, ContentBlock } from "@/lib/types";
+import type { ContactMethod } from "@/lib/types";
 
 export const siteMeta = {
   name: "ProPrint Kiadó",
@@ -21,26 +21,5 @@ export const contactMethods: ContactMethod[] = [
   {
     label: "Cím",
     value: "540123 Marosvásárhely, Könyv utca 8.",
-  },
-];
-
-export const adminContentBlocks: ContentBlock[] = [
-  {
-    id: "home-hero",
-    title: "Főoldal hero szekció",
-    summary: "Főcím, alcím, kiemelt CTA gombok",
-    status: "Published",
-  },
-  {
-    id: "about-page",
-    title: "Kiadóról oldal",
-    summary: "Bemutatkozó szöveg és szerkesztőségi hitvallás",
-    status: "Draft",
-  },
-  {
-    id: "contact-page",
-    title: "Kapcsolat oldal",
-    summary: "Kapcsolati adatok, nyitvatartás, űrlap szövegezése",
-    status: "Published",
   },
 ];

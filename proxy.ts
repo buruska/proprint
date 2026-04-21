@@ -41,7 +41,6 @@ export const config = {
     "/admin/books",
     "/admin/books/:path*",
     "/admin/contact",
-    "/admin/content",
     "/admin/ebooks",
     "/admin/handmade",
     "/admin/orders",

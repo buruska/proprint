@@ -8,7 +8,6 @@ export const ADMIN_PERMISSION_VALUES = [
   "events",
   "services",
   "contact",
-  "content",
 ] as const;
 
 export type AdminPermission = (typeof ADMIN_PERMISSION_VALUES)[number];
@@ -29,7 +28,6 @@ export const ADMIN_PERMISSION_LABELS: Record<AdminPermission, string> = {
   events: "Rendezvények",
   services: "Szolgáltatások",
   contact: "Kapcsolat",
-  content: "Tartalom",
 };
 
 export const ADMIN_PERMISSION_OPTIONS = ADMIN_PERMISSION_VALUES.map((value) => ({
@@ -52,7 +50,6 @@ export const ADMIN_NAVIGATION_LINKS: Array<{
   { href: "/admin/rendezvenyek", label: "Rendezvények", permission: "events" },
   { href: "/admin/services", label: "Szolgáltatások", permission: "services" },
   { href: "/admin/contact", label: "Kapcsolat", permission: "contact" },
-  { href: "/admin/content", label: "Tartalom", permission: "content" },
 ];
 
 export function normalizeAdminPermissions(value: unknown): AdminPermission[] {
@@ -174,10 +171,6 @@ export function getAdminPermissionForPath(pathname: string): AdminPermission | n
 
   if (pathname === "/admin/contact") {
     return "contact";
-  }
-
-  if (pathname === "/admin/content") {
-    return "content";
   }
 
   return null;
