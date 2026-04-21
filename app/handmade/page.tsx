@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { getHandmadePageContent } from "@/lib/handmade-content";
+import { HandmadeGallery } from "./handmade-gallery";
 
 import styles from "./page.module.css";
 
@@ -40,22 +41,7 @@ export default async function HandmadePage() {
           {hasGallery ? (
             <div className={styles.gallerySection}>
               <p className="eyebrow">Galéria</p>
-              <div className={styles.galleryGrid}>
-                {content.galleryImageUrls.map((imageUrl, index) => (
-                  <figure
-                    key={`${imageUrl}-${index}`}
-                    className={`${styles.galleryItem} ${styles[`galleryItem${(index % 5) + 1}`]}`}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={imageUrl}
-                      alt={`Handmade alkotás ${index + 1}.`}
-                      className={styles.galleryImage}
-                      loading="lazy"
-                    />
-                  </figure>
-                ))}
-              </div>
+              <HandmadeGallery imageUrls={content.galleryImageUrls} />
             </div>
           ) : null}
         </div>
