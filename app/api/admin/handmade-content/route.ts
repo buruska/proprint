@@ -24,8 +24,14 @@ function createUnauthorizedResponse(status: "unauthenticated" | "forbidden") {
   );
 }
 
-function isPayload(value: { leadText?: unknown } | null): value is { leadText: string } {
-  return Boolean(value && typeof value.leadText === "string");
+function isPayload(
+  value: { leadText?: unknown; galleryImageUrls?: unknown } | null,
+): value is { leadText: string; galleryImageUrls: unknown } {
+  return Boolean(
+    value &&
+      typeof value.leadText === "string" &&
+      Array.isArray(value.galleryImageUrls),
+  );
 }
 
 export async function GET() {
@@ -47,7 +53,9 @@ export async function PUT(request: Request) {
     return createUnauthorizedResponse(access.status);
   }
 
-  const payload = (await request.json().catch(() => null)) as { leadText?: unknown } | null;
+  const payload = (await request.json().catch(() => null)) as
+    | { leadText?: unknown; galleryImageUrls?: unknown }
+    | null;
 
   if (!isPayload(payload)) {
     return NextResponse.json(
@@ -66,6 +74,7 @@ export async function PUT(request: Request) {
       $set: {
         slug: HANDMADE_PAGE_SLUG,
         bodyHtml: content.leadText,
+        galleryImageUrls: content.galleryImageUrls,
       },
     },
     {

@@ -28,6 +28,10 @@ const pageContentSchema = new Schema(
       trim: true,
       default: "",
     },
+    galleryImageUrls: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: true,

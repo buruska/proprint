@@ -12,6 +12,7 @@ export const dynamic = "force-dynamic";
 
 export default async function HandmadePage() {
   const content = await getHandmadePageContent();
+  const hasGallery = content.galleryImageUrls.length > 0;
 
   return (
     <section className="section">
@@ -35,6 +36,28 @@ export default async function HandmadePage() {
           <div className={styles.brandCopy}>
             <p className={styles.lead}>{content.leadText}</p>
           </div>
+
+          {hasGallery ? (
+            <div className={styles.gallerySection}>
+              <p className="eyebrow">Galéria</p>
+              <div className={styles.galleryGrid}>
+                {content.galleryImageUrls.map((imageUrl, index) => (
+                  <figure
+                    key={`${imageUrl}-${index}`}
+                    className={`${styles.galleryItem} ${styles[`galleryItem${(index % 5) + 1}`]}`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={imageUrl}
+                      alt={`Handmade alkotás ${index + 1}.`}
+                      className={styles.galleryImage}
+                      loading="lazy"
+                    />
+                  </figure>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
