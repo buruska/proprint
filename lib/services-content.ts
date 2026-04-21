@@ -2,6 +2,7 @@ import "server-only";
 
 import { connectToDatabase } from "@/lib/mongodb";
 import { ServicesPageModel } from "@/lib/models/services-page";
+import { normalizeRichPageHtml } from "@/lib/rich-page-content";
 
 export const SERVICES_PAGE_SLUG = "services-page";
 
@@ -61,6 +62,58 @@ function normalizeMultilineText(value: unknown, fallback: string, maxLength: num
   return value.trim().slice(0, maxLength);
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function plainTextToHtml(value: string) {
+  return value
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, "<br />")}</p>`)
+    .join("\n");
+}
+
+function normalizeServicePricingText(value: unknown) {
+  const normalizedValue = normalizeMultilineText(value, "", 12000);
+
+  if (!normalizedValue) {
+    return "";
+  }
+
+  const containsNonImageHtml = /<\s*(?!\/?\s*img\b)[a-z!/]/i.test(normalizedValue);
+
+  if (containsNonImageHtml) {
+    return normalizeRichPageHtml(normalizedValue);
+  }
+
+  const sanitizedImages: string[] = [];
+  const withPlaceholders = normalizedValue.replace(/<img\b[^>]*>/gi, (match) => {
+    const sanitizedImage = normalizeRichPageHtml(match);
+
+    if (!sanitizedImage) {
+      return "";
+    }
+
+    const placeholder = `__SERVICE_IMAGE_${sanitizedImages.length}__`;
+    sanitizedImages.push(sanitizedImage);
+    return `\n\n${placeholder}\n\n`;
+  });
+
+  const html = plainTextToHtml(withPlaceholders).replace(
+    /<p>(__SERVICE_IMAGE_(\d+)__)<\/p>/g,
+    (_match, _placeholder, imageIndex) => sanitizedImages[Number(imageIndex)] ?? "",
+  );
+
+  return normalizeRichPageHtml(html);
+}
+
 function normalizeServiceCardId(value: unknown, fallback: string) {
   if (typeof value !== "string") {
     return fallback;
@@ -113,7 +166,7 @@ export function sanitizeServicesPageInput(value: unknown): ServiceCardContent[] 
       id,
       title,
       coverImageUrl: normalizeMultilineText(record.coverImageUrl, "", 500),
-      pricingText: normalizeMultilineText(record.pricingText, "", 12000),
+      pricingText: normalizeServicePricingText(record.pricingText),
     });
 
     return result;

@@ -128,7 +128,10 @@ export function ServicesClient({ cards }: { cards: ServiceCard[] }) {
 
             {activeService.pricingText.trim() ? (
               <div className={styles.modalBody}>
-                <p className={styles.modalBodyText}>{activeService.pricingText}</p>
+                <div
+                  className={`${styles.modalBodyRich} rich-content`}
+                  dangerouslySetInnerHTML={{ __html: activeService.pricingText }}
+                />
               </div>
             ) : (
               <div className={styles.modalBody}>

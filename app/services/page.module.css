@@ -227,24 +227,24 @@
 
 .modalBody {
   min-height: 220px;
+  display: grid;
+  gap: 18px;
   padding: 16px;
   border: 1px solid rgba(167, 198, 192, 0.65);
   background: rgba(255, 255, 255, 0.76);
 }
 
-.modalBodyText,
 .modalBodyEmpty {
   margin: 0;
   line-height: 1.7;
-  white-space: pre-line;
-}
-
-.modalBodyText {
-  color: var(--text);
 }
 
 .modalBodyEmpty {
   color: var(--text-soft);
+}
+
+.modalBodyRich {
+  width: 100%;
 }
 
 @media (max-width: 1080px) {
