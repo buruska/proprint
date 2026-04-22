@@ -33,21 +33,21 @@ export default function ContactPage() {
             <article className="info-card">
               <p className="eyebrow">Telefon</p>
               <div className={styles.infoList}>
-                <a href="tel:0266314257" className={styles.infoLink}>
+                <a href="tel:+40266314257" className={styles.infoLink}>
                   <span className={styles.infoIcon} aria-hidden="true">
                     <svg viewBox="0 0 24 24" role="img" focusable="false">
                       <path d="M6.7 4.5h2.9l1.2 4-1.8 1.7a14 14 0 0 0 5 5l1.7-1.8 4 1.2v2.9c0 .8-.7 1.5-1.5 1.5A13.5 13.5 0 0 1 4.5 6c0-.8.7-1.5 1.5-1.5Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
                     </svg>
                   </span>
-                  <span>0266-314257</span>
+                  <span>+40-266-314 257</span>
                 </a>
-                <a href="tel:0744625733" className={styles.infoLink}>
+                <a href="tel:+40744625733" className={styles.infoLink}>
                   <span className={styles.infoIcon} aria-hidden="true">
                     <svg viewBox="0 0 24 24" role="img" focusable="false">
                       <path d="M6.7 4.5h2.9l1.2 4-1.8 1.7a14 14 0 0 0 5 5l1.7-1.8 4 1.2v2.9c0 .8-.7 1.5-1.5 1.5A13.5 13.5 0 0 1 4.5 6c0-.8.7-1.5 1.5-1.5Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
                     </svg>
                   </span>
-                  <span>0744 625733</span>
+                  <span>+40-744-625 733</span>
                 </a>
               </div>
             </article>
