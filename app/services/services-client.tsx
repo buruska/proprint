@@ -121,7 +121,6 @@ export function ServicesClient({ cards }: { cards: ServiceCard[] }) {
               Bezárás
             </button>
 
-            <p className="eyebrow">Áraink</p>
             <h2 id="services-prices-title" className={styles.modalTitle}>
               {activeService.title}
             </h2>
