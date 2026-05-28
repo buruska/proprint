@@ -59,7 +59,7 @@ export default async function EventsPage() {
 
               {events.length === 0 ? (
                 <p className={styles.emptyEvents}>
-                  Hamarosan itt jelennek meg a következő handmade rendezvények.
+                  A közelgő rendezvényekről itt lehet majd tájékozódni.
                 </p>
               ) : (
                 <ul className={styles.eventsList}>
